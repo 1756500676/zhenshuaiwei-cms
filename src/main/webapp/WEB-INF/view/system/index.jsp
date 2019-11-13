@@ -5,14 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link
-	href="<%=request.getContextPath() %>/static/bootstrap/css/bootstrap.css"
-	rel="stylesheet">
-<script type="text/javascript"
-	src="<%=request.getContextPath() %>/static/js/jquery-3.2.1.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath() %>/static/bootstrap/js/bootstrap.js"></script>
-<title>CMS管理平台</title>
+<link href="<%=request.getContextPath() %>/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/static/css/jquery/icons.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="<%=request.getContextPath() %>/static/js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/static/bootstrap/js/bootstrap.js"></script>
+<title>ZSW公司CMS管理平台</title>
 </head>
 <body>
 	<div class="hrms_container">
@@ -32,7 +29,7 @@
 				</div>
 
 				<div class="collapse navbar-collapse" id="hrms-navbar-collapse-1">
-					<!--  <ul class="nav navbar-nav">
+					  <ul class="nav navbar-nav">
                           <li class="active">
                             <a href="#">公司介绍 <span class="sr-only">(current)</span>  </a>
                           </li>
@@ -40,14 +37,14 @@
                           <li><a href="#">请假申请</a></li>
                           <li><a href="#">报销申请</a></li>
                           <li><a href="#">出勤记录</a></li>
-                        </ul> -->
+                        </ul>
 
-					<!--  <form class="navbar-form navbar-left">
+					  <form class="navbar-form navbar-left">
                             <div class="form-group">
                               <input type="text" class="form-control" placeholder="站内搜索">
                             </div>
                             <button type="submit" class="btn btn-default">搜索</button>
-                        </form> -->
+                        </form> 
 
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -79,7 +76,7 @@
 			<div class="panel-group col-sm-2" id="hrms_sidebar_left" role="tablist" aria-multiselectable="true">
 				<ul class="nav nav-pills nav-stacked index_sidebar">
 					<li role="presentation" class="active"><a href="#"> 
-							<span class="glyphicon glyphicon-user" aria-hidden="true">首页</span>
+							<i class="ti-home" aria-hidden="true">首页</i>
 					</a></li>
 				</ul>
 				<ul class="nav nav-pills nav-stacked article_sidebar">

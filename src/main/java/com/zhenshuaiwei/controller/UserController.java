@@ -54,6 +54,7 @@ public class UserController {
 			@RequestParam(defaultValue = "")String name) {
 		PageInfo<User> info = service.getUserList(name,page);
 		m.addAttribute("info", info);
+		m.addAttribute("name", name);
 		return "user/userList";
 	}
 	
