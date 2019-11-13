@@ -31,8 +31,6 @@
 	<!-- 不拦截静态资源 -->
 	<mvc:default-servlet-handler/>
 	
-	<!-- 允许静态资源的访问 -->
-	<mvc:resources mapping="/static/**" location="/WEB-INF/static/" />
 	
 	<!-- 上传下载配置 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
