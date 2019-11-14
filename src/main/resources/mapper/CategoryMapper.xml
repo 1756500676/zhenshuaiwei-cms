@@ -13,4 +13,12 @@
    			from cms_category
   			where id=${value}
   		</select>
+  		
+  		<select id="getCateListByChannelId" resultType="com.zhenshuaiwei.entity.Category">
+  			select 	id,
+					name,
+					channel_id as channelId
+   			from cms_category
+  			where channel_id=${value}
+  		</select>
   </mapper>

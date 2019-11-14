@@ -54,4 +54,23 @@
 			where status = 1 and deleted = 0 
 			And id =${value}
 	 	</select>
+	 	
+	 	<select id="getArticleByCG" resultMap="ArticleMap">
+	 		select	id,
+					title,
+					picture,
+					channel_id,
+					category_id,
+					user_id,
+					hits,
+					created,
+					updated,
+					commentCnt
+			from cms_article
+			where status = 1 and deleted = 0 and hot = 1
+			AND  channel_id=${chId} 
+			<if test="caId != 0">
+				and category_id =${caId}
+			</if>
+	 	</select>
   </mapper>

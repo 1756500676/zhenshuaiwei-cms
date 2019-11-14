@@ -50,4 +50,11 @@ public class ArticleServiceImpl implements ArticleService {
 		return mapper.getArticleById(id);
 	}
 
+	@Override
+	public PageInfo<Article> getArticleByCG(int chId, int caId, int page) {
+		PageHelper.startPage(page, 5);
+		List<Article> articleByCG = mapper.getArticleByCG(chId,caId);
+		return new PageInfo<Article>(articleByCG);
+	}
+
 }

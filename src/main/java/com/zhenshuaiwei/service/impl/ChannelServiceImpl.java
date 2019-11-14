@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhenshuaiwei.dao.ChannelMapper;
+import com.zhenshuaiwei.entity.Category;
 import com.zhenshuaiwei.entity.Channel;
 import com.zhenshuaiwei.service.ChannelService;
 
@@ -35,6 +36,7 @@ public class ChannelServiceImpl implements ChannelService{
 	public List<Channel> getChannelList() {
 		return mapper.getChannelList();
 	}
+
 	
 	
 

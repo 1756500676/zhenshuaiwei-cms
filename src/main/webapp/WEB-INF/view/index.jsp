@@ -63,15 +63,15 @@
 			<!-- 左侧菜单 -->
 			<div class="col-md-2" style="minheight:200px;margin-top:20px" >
 					<div class="list-group">
-						 <a href="#" class="list-group-item active">热门文章</a>
+						 <a href="/system/index" class="list-group-item active">热门文章</a>
 						<c:forEach items="${channelList }" var="channel">
-							<a href="#" class="list-group-item">${channel.name }</a>
+							<a href="javascript:showChannel('/article/getArticleByCG?chId=${channel.id }')" class="list-group-item">${channel.name }</a>
 <%-- 						    <li class="list-group-item" data="article/getArticleByChannelId?channelId=${channel.id }"></li> --%>
 						</c:forEach>
 					</div>	
 			</div>
 			<!-- 中间的内容 -->
-			<div class="col-md-8" style="background:white;minheight:200px" >
+			<div class="col-md-8" style="background:white;minheight:200px" id="context" >
 				<div>
 						<hr>
 						
@@ -109,7 +109,7 @@
 						</a>
 					</div>
 					<!-- 放文章的列表 -->
-					<div class="container">
+					<div class="container" >
 						<c:forEach items="${info.list }" var="hotArticle">
 							<div class=row>
 								 <hr>
@@ -131,13 +131,13 @@
 							 	
 							    <li class=""><a href="/system/index?page=${info.pageNum == 1 ? 1 : info.pageNum - 1 }" >&laquo;</a></li>
 							    
-							    <c:if test="${info.pages == 5 }">
-									<c:forEach var="count" varStatus="index" begin="1" end="5">
+							    <c:if test="${info.pages <= 5 }">
+									<c:forEach var="count" varStatus="index" begin="1" end="${info.pages }">
 									    <li class="${count == info.pageNum ?  'active' : '' }"><a href="/system/index?page=${count }" class="">${count }</a></li>
 									 </c:forEach>
 							    </c:if>
 							    
-							    <c:if test="${info.pages != 5 }">
+							    <c:if test="${info.pages > 5 }">
 								 	<c:choose>
 								 		<c:when test="${info.pageNum > 2 && info.pageNum < (info.pages -1) }">
 										    <c:forEach var="count" varStatus="index" begin="${info.pageNum -2}" end="${info.pageNum + 2}">
@@ -212,7 +212,13 @@
 
 </div>
 
+<script type="text/javascript">
+	function showChannel(url) {
+		$("#context").load(url);
+	}
 
+
+</script>
 
 <!-- 底部 -->
 <nav class="navbar navbar-default">

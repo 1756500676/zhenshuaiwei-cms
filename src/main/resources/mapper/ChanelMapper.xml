@@ -22,5 +22,6 @@
 		from cms_channel
 		where id=${value}
   	</select>
+  	
   
   </mapper>

@@ -12,6 +12,8 @@ package com.zhenshuaiwei.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.zhenshuaiwei.entity.Article;
 
 /** 
@@ -49,5 +51,15 @@ public interface ArticleMapper {
 	 * @date: 2019年11月14日下午6:54:27
 	 */
 	Article getArticleById(Integer id);
+
+	/** 
+	 * @Title: getArticleByCG 
+	 * @Description: TODO
+	 * @param chId
+	 * @param caId
+	 * @return: void
+	 * @date: 2019年11月14日下午7:32:56
+	 */
+	List<Article> getArticleByCG(@Param("chId")int chId, @Param("caId")int caId);
 
 }

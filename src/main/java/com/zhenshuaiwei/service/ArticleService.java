@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.entity.Article;
+import com.zhenshuaiwei.entity.Channel;
 
 /** 
  * @ClassName: ArticleService 
@@ -48,5 +49,17 @@ public interface ArticleService {
 	 * @date: 2019年11月14日下午6:53:57
 	 */
 	Article getArticleById(Integer id);
+
+	/** 
+	 * @Title: getArticleByCG 
+	 * @Description: TODO
+	 * @param chId
+	 * @param caId
+	 * @param page
+	 * @return: void
+	 * @date: 2019年11月14日下午7:32:09
+	 */
+	PageInfo<Article> getArticleByCG(int chId, int caId, int page);
+
 
 }

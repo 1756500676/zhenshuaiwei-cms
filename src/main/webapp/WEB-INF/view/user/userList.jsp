@@ -74,13 +74,13 @@
 			 	
 			    <li class=""><a href="javascript:goPage(${info.pageNum == 1 ? 1 : info.pageNum - 1 })" >&laquo;</a></li>
 			    
-			    <c:if test="${info.pages == 5 }">
-					<c:forEach var="count" varStatus="index" begin="1" end="5">
+			    <c:if test="${info.pages <= 5 }">
+					<c:forEach var="count" varStatus="index" begin="1" end="${info.pages }">
 					    <li class="${count == info.pageNum ?  'active' : '' }"><a href="javascript:goPage(${count })" class="">${count }</a></li>
 					 </c:forEach>
 			    </c:if>
 			    
-			    <c:if test="${info.pages != 5 }">
+			    <c:if test="${info.pages > 5 }">
 				 	<c:choose>
 				 		<c:when test="${info.pageNum > 2 && info.pageNum < (info.pages -1) }">
 						    <c:forEach var="count" varStatus="index" begin="${info.pageNum -2}" end="${info.pageNum + 2}">
