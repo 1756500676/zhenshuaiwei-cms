@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.zhenshuaiwei.dao.ArticleMapper">
+  
+  		<resultMap type="com.zhenshuaiwei.entity.Article" id="ArticleMap">
+  			<id column="id" property="id" />
+  			<association property="channel" column="channel_id" select="com.zhenshuaiwei.dao.ChannelMapper.getChannelById"/>
+  			<association property="category" column="category_id" select="com.zhenshuaiwei.dao.CategoryMapper.getCategoryById" />
+  			<association property="user" column="user_id" select="com.zhenshuaiwei.dao.UserMapper.getUserById" />
+  		</resultMap>
+  		
+  		<select id="getNewArticleList" resultMap="ArticleMap">
+  			select	id,
+					title,
+					picture
+			from cms_article
+			where status = 1 and deleted = 0
+			order by created desc limit ${value}
+	 	</select>
+  		<select id="getHotArticleList" resultMap="ArticleMap">
+  			select	id,
+					title,
+					picture,
+					channel_id,
+					category_id,
+					user_id,
+					hits,
+					created,
+					updated,
+					commentCnt
+			from cms_article
+			where status = 1 and deleted = 0 and hot = 1
+	 	</select>
+	 	<select id="getArticleById" resultMap="ArticleMap">
+	 		select 
+	 				id,
+					title,
+					content,
+					picture,
+					channel_id,
+					category_id,
+					user_id,
+					hits,
+					hot,
+					status,
+					deleted,
+					created,
+					updated,
+					commentCnt,
+					articleType
+			from cms_article
+			where status = 1 and deleted = 0 
+			And id =${value}
+	 	</select>
+  </mapper>
