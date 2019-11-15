@@ -10,6 +10,8 @@
  */
 package com.zhenshuaiwei.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
+import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.UserService;
@@ -58,6 +61,16 @@ public class UserController {
 		return "user/userList";
 	}
 	
+	/**
+	 * 
+	 * @Title: updateUserLocked 
+	 * @Description: 修改用户的封禁状态
+	 * @param id
+	 * @param locked
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月15日下午1:05:27
+	 */
 	@ResponseBody
 	@PostMapping("/updateUserLocked")
 	public JsonMsg updateUserLocked(int id,int locked) {
@@ -79,5 +92,42 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @Title: register 
+	 * @Description: 用户的注册
+	 * @param user
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月15日下午1:50:45
+	 */
+	@ResponseBody
+	@PostMapping("/register")
+	public JsonMsg register(User user) {
+		return service.register(user);
+	}
 
+	
+	@GetMapping("/toRegister")
+	public String toRegister() {
+		return "user/register";
+	}
+	
+	@GetMapping("/login")
+	public String toLogin() {
+		return "user/login";
+	}
+	
+	@ResponseBody
+	@PostMapping("/goLogin")
+	public JsonMsg goLogin(HttpSession session,User user) {
+		System.out.println("===================================================");
+		User user2 = service.goLogin(user);
+		if (user2 == null) {
+			return JsonMsg.error().addInfo("login_error", "该用户不存在");
+		}
+		session.setAttribute(ConstantClass.USER_KEY, user2);
+		return JsonMsg.success();
+	}
+	
 }

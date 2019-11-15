@@ -15,7 +15,10 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zhenshuaiwei.common.CmsAssert;
 import com.zhenshuaiwei.common.ConstantClass;
+import com.zhenshuaiwei.common.JsonMsg;
+import com.zhenshuaiwei.common.Md5;
 import com.zhenshuaiwei.dao.UserMapper;
 import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.UserService;
@@ -55,6 +58,29 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public JsonMsg register(User user) {
+			User userByName = mapper.getUserByName(user.getUsername());
+			if (userByName != null) {
+				return JsonMsg.error().addInfo("register_error", "该用户已存在");
+			}
+			CmsAssert.AssertTrue(userByName == null, "该用户已存在");
+			user.setPassword(Md5.password(user.getPassword(), user.getPassword().substring(0,3)));
+			int register = mapper.register(user);
+			if (register <= 0) {
+				return JsonMsg.error().addInfo("register_error", "服务端发生异常请联系管理员");
+			}
+			CmsAssert.AssertTrue(register > 0, "注册失败");
+			return JsonMsg.success();
+	}
+
+	@Override
+	public User goLogin(User user) {
+		User user2 = mapper.goLogin(user);
+//		CmsAssert.AssertTrue(user2 != null, "用户名或密码输入错误");
+		return user2;
 	}
 
 }

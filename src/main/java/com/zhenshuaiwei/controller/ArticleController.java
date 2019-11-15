@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.entity.Article;
 import com.zhenshuaiwei.entity.Category;
+import com.zhenshuaiwei.entity.Channel;
 import com.zhenshuaiwei.service.ArticleService;
 import com.zhenshuaiwei.service.CategoryService;
 import com.zhenshuaiwei.service.ChannelService;
@@ -44,6 +45,8 @@ public class ArticleController {
 	@Autowired
 	private CategoryService categoryService; 
 	
+	@Autowired
+	private ChannelService channelService;
 	
 	/**
 	 * 
@@ -106,6 +109,18 @@ public class ArticleController {
 	}
 	
 	
+	/**
+	 * 
+	 * @Title: getArticleByCG 
+	 * @Description: 根据频道获取文章
+	 * @param m
+	 * @param chId
+	 * @param caId
+	 * @param page
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月15日上午10:41:03
+	 */
 	@GetMapping("/getArticleByCG")
 	public String getArticleByCG(Model m,
 								 @RequestParam(defaultValue = "1")int chId,
@@ -118,11 +133,14 @@ public class ArticleController {
 		 * 获取文章
 		 */
 		PageInfo<Article> info = articleService.getArticleByCG(chId,caId,page);
+		List<Channel> channelList = channelService.getChannelList();
+		channelList.forEach(System.out::println);
 		
+		m.addAttribute("channelList",channelList);
 		m.addAttribute("caId",caId);
 		m.addAttribute("chId",chId);
 		m.addAttribute("info",info);
-		return "article/channelCate";
+		return "article/channelCate2";
 	}
 
 }

@@ -50,5 +50,36 @@
 		where id=${value}
 	</select>
 	
-
+	<insert id="register">
+	   insert into cms_user set 
+								username=#{username},
+								password=#{password},
+								nickname=#{nickname},
+								birthday=#{birthday},
+								gender=#{gender},
+								locked=0,
+								create_time=now(),
+								update_time=now(),
+								url=#{url},
+								score=#{score},
+								role=#{role}
+	</insert>
+	
+	<select id="goLogin" resultMap="UserMap">
+		SELECT 
+				id,
+				username,
+				password,
+				nickname,
+				birthday,
+				gender,
+				locked,
+				create_time,
+				update_time,
+				url,
+				score,
+				role
+		FROM cms_user		
+		where username =#{username} and password=#{password}
+	</select>
 </mapper>

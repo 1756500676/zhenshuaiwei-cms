@@ -11,6 +11,7 @@
 package com.zhenshuaiwei.service;
 
 import com.github.pagehelper.PageInfo;
+import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.User;
 
 /** 
@@ -49,5 +50,24 @@ public interface UserService {
 	 * @date: 2019年11月13日下午2:24:25
 	 */
 	boolean updateUserLocked(int id, int locked);
+
+	/** 
+	 * @Title: register 
+	 * @Description: TODO
+	 * @param user
+	 * @return: void
+	 * @date: 2019年11月15日下午1:08:14
+	 */
+	JsonMsg register(User user);
+
+	/** 
+	 * @Title: goLogin 
+	 * @Description: TODO
+	 * @param user
+	 * @return: void
+	 * @date: 2019年11月15日下午4:03:51
+	 */
+	User goLogin(User user);
+
 
 }

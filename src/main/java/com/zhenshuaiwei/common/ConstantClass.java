@@ -33,6 +33,11 @@ public class ConstantClass {
 	 */
 	public static final int PAGE_Size=5;
 	
+	/**
+	 * 用户
+	 */
+	public static final String USER_KEY = "user";
+	
 	
 	
 }

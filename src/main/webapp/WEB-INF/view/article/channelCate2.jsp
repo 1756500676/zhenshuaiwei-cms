@@ -30,7 +30,6 @@
       <ul class="nav navbar-nav">
         
       </ul>
-      
       <form class="navbar-form navbar-left" >
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
@@ -56,14 +55,13 @@
     
   </div>
 </nav>
-
 <div class="container-fluid" >
 	<div class="container" style="minheight:200px" >
 		<div class="row">
 			<!-- 左侧菜单 -->
 			<div class="col-md-2" style="minheight:200px;margin-top:20px" >
 					<div class="list-group">
-						 <a href="/system/index" class="list-group-item active">热门文章</a>
+						 <a href="/system/index" class="list-group-item ${chId == 0 ? 'active' : '' }">热门文章</a>
 						<c:forEach items="${channelList }" var="channel">
 							<a href="/article/getArticleByCG?chId=${channel.id }" class="list-group-item ${chId == channel.id ? 'active' : '' }">${channel.name }</a>
 <%-- 						    <li class="list-group-item" data="article/getArticleByChannelId?channelId=${channel.id }"></li> --%>
@@ -77,37 +75,20 @@
 						
 				</div>
 				
-				<div id="myCarousel" class="carousel slide" style="minheight:200px">
-						<!-- 轮播（Carousel）指标 -->
-						<ol class="carousel-indicators">
-							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-							<li data-target="#myCarousel" data-slide-to="1"></li>
-							<li data-target="#myCarousel" data-slide-to="2"></li>
-						</ol>   
-						<!-- 轮播（Carousel）项目 -->
-						<div class="carousel-inner">
-							<div class="item active" style="widows: 800px;height: 300px">
-								<a href="#" class="thumbnail">
-									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/IMG_0832.JPG" alt="First slide">
-								</a>
-							</div>
-							<div class="item" style="widows: 800px;height: 300px">
-								<img style="widows: 800px;height: 300px" src="/resource/images/avatar1.jpg" alt="Second slide">
-							</div>
-							<div class="item" style="widows: 800px;height: 300px"> 
-								<img  style="widows: 800px;height: 300px" src="/resource/images/bg05.jpg" alt="Third slide">
-							</div>
-						</div>
-						<!-- 轮播（Carousel）导航 -->
-						<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-							<span class="sr-only">Previous</span>
-						</a>
-						<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-							<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-							<span class="sr-only">Next</span>
-						</a>
-					</div>
+					<div class="container">
+		<ul class="nav nav-tabs">
+			  <li class="${caId == 0 ? 'active' : '' }" role="presentation">
+			  	<a href="/article/getArticleByCG?chId=${chId }" >全部</a>
+			  	</li>
+			<c:forEach items="${cateList }" var="cate">
+			  <li class="${cate.id == caId ? 'active' : '' }" role="presentation">
+			  	<a href="/article/getArticleByCG?chId=${chId }&caId=${cate.id }" >${cate.name }</a>
+			  </li>
+			</c:forEach>
+		</ul>
+	</div>
+				
+				
 					<!-- 放热门文章的列表 -->
 					<div class="container" >
 						<c:forEach items="${info.list }" var="hotArticle">
@@ -117,7 +98,7 @@
 									<img height="50px" width="50px" src="d:/pic/${hotArticle.picture }">
 								</div>
 								<div class="col-md-10 pull-left">
-									<a href="javascript:showArticle('/article/getArticleById?id=${hotArticle.id }&protal=hot')">${hotArticle.title }</a>
+									<a href="javascript:showArticle('/article/getArticleById?id=${hotArticle.id }&protal=${hotArticle.channel.id},${hotArticle.category.id}')">${hotArticle.title }</a>
 									<br>
 									频道:<a href="#">${hotArticle.channel.name }</a>
 									分类:<a href="#">${hotArticle.category.name}</a>
@@ -175,7 +156,6 @@
 							</ul>				
 						</div>
 					</div>
-					 
 			</div>
 			<!-- 中间的内容结束 -->
 			
