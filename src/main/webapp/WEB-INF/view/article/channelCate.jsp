@@ -9,6 +9,9 @@
 <body>
 	<div class="container">
 		<ul class="nav nav-tabs">
+			  <li class="${caId == 0 ? 'active' : '' }" role="presentation">
+			  	<a href="javascript:showChannel('/article/getArticleByCG?chId=${chId }')" >全部</a>
+			  	</li>
 			<c:forEach items="${cateList }" var="cate">
 			  <li class="${cate.id == caId ? 'active' : '' }" role="presentation">
 			  	<a href="javascript:showChannel('/article/getArticleByCG?chId=${chId }&caId=${cate.id }')" >${cate.name }</a>
@@ -25,7 +28,7 @@
 									<img height="50px" width="50px" src="d:/pic/${hotArticle.picture }">
 								</div>
 								<div class="col-md-10 pull-left">
-									<a href="/article/getArticleById?id=${hotArticle.id }">${hotArticle.title }</a>
+									<a href="javascript:showArticle('/article/getArticleById?id=${hotArticle.id }&protal=${hotArticle.channel.id},${hotArticle.category.id}')">${hotArticle.title }</a>
 									<br>
 									频道:<a href="#">${hotArticle.channel.name }</a>
 									分类:<a href="#">${hotArticle.category.name}</a>

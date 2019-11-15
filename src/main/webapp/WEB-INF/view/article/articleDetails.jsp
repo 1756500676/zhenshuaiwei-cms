@@ -14,6 +14,9 @@
 </head>
 <body>
 	<div class="container">
+	
+	
+	
 		<h2>${article.title }</h2>
 		<div>
 					频道:<a href="#">${article.channel.name }</a> 分类:<a href="#">${article.category.name}</a>
@@ -21,11 +24,14 @@
 					<fmt:formatDate value="${article.created }" pattern="YYYY年MM月dd日" />
 					${article.content }
 		</div>
+		
+		
+		
 			<div>
 				<nav aria-label="...">
 					<ul class="pager">
-						<li><a href="#">上一篇</a></li>
-						<li><a href="#">下一篇</a></li>
+						<li><a href="/article/getArticleById?id=${article.id }&protal=${protal}&page=pre">上一篇</a></li>
+						<li><a href="/article/getArticleById?id=${article.id }&protal=${protal}&page=next">下一篇</a></li>
 					</ul>
 				</nav>
 			</div>

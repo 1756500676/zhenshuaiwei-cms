@@ -65,7 +65,7 @@
 					<div class="list-group">
 						 <a href="/system/index" class="list-group-item active">热门文章</a>
 						<c:forEach items="${channelList }" var="channel">
-							<a href="javascript:showChannel('/article/getArticleByCG?chId=${channel.id }')" class="list-group-item">${channel.name }</a>
+							<a href="javascript:showChannel('/article/getArticleByCG?chId=${channel.id }')" class="list-group-item ${chId == channel.id ? 'active' : '' }">${channel.name }</a>
 <%-- 						    <li class="list-group-item" data="article/getArticleByChannelId?channelId=${channel.id }"></li> --%>
 						</c:forEach>
 					</div>	
@@ -108,7 +108,7 @@
 							<span class="sr-only">Next</span>
 						</a>
 					</div>
-					<!-- 放文章的列表 -->
+					<!-- 放热门文章的列表 -->
 					<div class="container" >
 						<c:forEach items="${info.list }" var="hotArticle">
 							<div class=row>
@@ -117,7 +117,7 @@
 									<img height="50px" width="50px" src="d:/pic/${hotArticle.picture }">
 								</div>
 								<div class="col-md-10 pull-left">
-									<a href="/article/getArticleById?id=${hotArticle.id }">${hotArticle.title }</a>
+									<a href="javascript:showArticle('/article/getArticleById?id=${hotArticle.id }&protal=hot')">${hotArticle.title }</a>
 									<br>
 									频道:<a href="#">${hotArticle.channel.name }</a>
 									分类:<a href="#">${hotArticle.category.name}</a>
@@ -199,7 +199,7 @@
 						<div class="panel-body">
 							<ul class="pull-left">
 								<c:forEach items="${newArticleList }" var="newArticle">
-									<li><a href="#">${newArticle.title }</a></li>
+									<li><a href="javascript:showArticle('/article/getArticleById?id=${newArticle.id }&protal=new')">${newArticle.title }</a></li>
 								</c:forEach>
 							</ul>
 						</div>
@@ -216,8 +216,9 @@
 	function showChannel(url) {
 		$("#context").load(url);
 	}
-
-
+	function showArticle(url) {
+		window.open(url);
+	}
 </script>
 
 <!-- 底部 -->

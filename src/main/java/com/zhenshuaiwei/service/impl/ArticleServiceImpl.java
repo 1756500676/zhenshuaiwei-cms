@@ -41,7 +41,9 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public  PageInfo<Article> getHotArticleList(int page) {
-		PageHelper.startPage(page, 3);
+		if (page != 0) {
+			PageHelper.startPage(page, 3);
+		}
 		return new PageInfo<Article>(mapper.getHotArticleList());
 	}
 
@@ -52,7 +54,9 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public PageInfo<Article> getArticleByCG(int chId, int caId, int page) {
-		PageHelper.startPage(page, 5);
+		if (page != 0) {
+			PageHelper.startPage(page, 5);
+		}
 		List<Article> articleByCG = mapper.getArticleByCG(chId,caId);
 		return new PageInfo<Article>(articleByCG);
 	}
