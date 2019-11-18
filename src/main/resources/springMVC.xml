@@ -41,28 +41,22 @@
 	</bean>
 	
 	<!-- 拦截器 -->
-	<!--  <mvc:interceptors>
+	 <mvc:interceptors>
     	<mvc:interceptor>
-    	只针对控制器，后台的访问地址 ，拦截所有的级别的访问路径
     	<mvc:mapping path="/**"/>
-    	放行的方法
-    	<mvc:exclude-mapping path="/login.do"/>
+    	<mvc:exclude-mapping path="/user/login"/>
+    	<mvc:exclude-mapping path="/user/getCodeStr"/>
    		<mvc:exclude-mapping path="/html/**"/>
-		<mvc:exclude-mapping path="/resource/**"/>
-		<mvc:exclude-mapping path="/article/show"/>
-		<mvc:exclude-mapping path="/article/comment"/>
-		<mvc:exclude-mapping path="/article/getclist"/>
-		<mvc:exclude-mapping path="/article/addHits"/>
+		<mvc:exclude-mapping path="/static/**"/>
 		<mvc:exclude-mapping path="/pic/**"/>
 		<mvc:exclude-mapping path="/"/>
 		<mvc:exclude-mapping path="/index"/>
-		<mvc:exclude-mapping path="/user/login"/>
+		<mvc:exclude-mapping path="/user/goLogin"/>
 		<mvc:exclude-mapping path="/user/register"/>
-		<mvc:exclude-mapping path="/user/checkExist"/>	
-    	自定义额拦截器类
-    	<bean class="com.sw.interceptor.MyInterceptor"></bean>
+		<mvc:exclude-mapping path="/user/checkname"/>	
+    	<bean class="com.zhenshuaiwei.interceptor.UserInterceptor"></bean>
     	</mvc:interceptor>
-    </mvc:interceptors> -->
+    </mvc:interceptors>
     
       <!--设置spring实体类校验支持
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">

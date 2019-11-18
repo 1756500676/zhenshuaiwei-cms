@@ -76,4 +76,47 @@
 				and category_id =${caId}
 			</if>
 	 	</select>
+	 	
+	 	<select id="getMyArticle" resultMap="ArticleMap">
+	 		select 
+	 				id,
+					title,
+					content,
+					picture,
+					channel_id,
+					category_id,
+					user_id,
+					hits,
+					hot,
+					status,
+					deleted,
+					created,
+					updated,
+					commentCnt,
+					articleType
+			from cms_article
+			where deleted = 0 
+			And user_id =${value}
+	 	</select>
+	 	<select id="articleIsNull" resultMap="ArticleMap">
+	 		select 
+	 				id,
+					title,
+					content,
+					picture,
+					channel_id,
+					category_id,
+					user_id,
+					hits,
+					hot,
+					status,
+					deleted,
+					created,
+					updated,
+					commentCnt,
+					articleType
+			from cms_article
+			where deleted = 0 
+			And id = ${value}
+	 	</select>
   </mapper>

@@ -61,4 +61,20 @@ public class ArticleServiceImpl implements ArticleService {
 		return new PageInfo<Article>(articleByCG);
 	}
 
+	@Override
+	public PageInfo<Article> getMyArticle(String page, Integer id) {
+		PageHelper.startPage(Integer.parseInt(page),10);
+		return new PageInfo<Article>(mapper.getMyArticle(id));
+	}
+
+	@Override
+	public int deleteArticle(int id) {
+		return mapper.deleteArticle(id);
+	}
+
+	@Override
+	public Article articleIsNull(int id) {
+		return mapper.articleIsNull(id);
+	}
+
 }

@@ -61,5 +61,35 @@ public interface ArticleService {
 	 */
 	PageInfo<Article> getArticleByCG(int chId, int caId, int page);
 
+	/** 
+	 * @Title: getMyArticle 
+	 * @Description: TODO
+	 * @param page
+	 * @param id
+	 * @return: void
+	 * @date: 2019年11月18日下午7:02:55
+	 */
+	PageInfo<Article> getMyArticle(String page, Integer id);
+
+	/** 
+	 * @Title: deleteArticle 
+	 * @Description: TODO
+	 * @param id
+	 * @return: void
+	 * @date: 2019年11月18日下午7:48:45
+	 */
+	int deleteArticle(int id);
+
+	/** 
+	 * @Title: articleIsNull 
+	 * @Description: TODO
+	 * @param id
+	 * @return
+	 * @return: Article
+	 * @date: 2019年11月18日下午7:57:34
+	 */
+	Article articleIsNull(int id);
+
+
 
 }

@@ -10,6 +10,9 @@
  */
 package com.zhenshuaiwei.controller;
 
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,7 @@ import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.UserService;
+import com.zhenshuaiwei.ssmutils.CaptchaUtil;
 
 /** 
  * @ClassName: UserController 
@@ -107,27 +111,128 @@ public class UserController {
 		return service.register(user);
 	}
 
-	
+	/**
+	 * 
+	 * @Title: toRegister 
+	 * @Description: 去注册页面
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月17日下午7:59:56
+	 */
 	@GetMapping("/toRegister")
 	public String toRegister() {
 		return "user/register";
 	}
 	
+	/**
+	 * 
+	 * @Title: toLogin 
+	 * @Description: 去登入页面
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月17日下午8:00:09
+	 */
 	@GetMapping("/login")
 	public String toLogin() {
 		return "user/login";
 	}
 	
+	/**
+	 * 
+	 * @Title: goLogin 
+	 * @Description: 登入
+	 * @param session
+	 * @param user
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月17日下午8:00:29
+	 */
 	@ResponseBody
 	@PostMapping("/goLogin")
-	public JsonMsg goLogin(HttpSession session,User user) {
-		System.out.println("===================================================");
-		User user2 = service.goLogin(user);
-		if (user2 == null) {
-			return JsonMsg.error().addInfo("login_error", "该用户不存在");
+	public JsonMsg goLogin(HttpSession session,User user,String code) {
+		String code2 = (String) session.getAttribute("code");
+		if (!code2.equalsIgnoreCase(code)) {
+			return JsonMsg.error().addInfo("login_error", "验证码输入错误");
 		}
-		session.setAttribute(ConstantClass.USER_KEY, user2);
-		return JsonMsg.success();
+		User user2 = service.goLogin(user);
+		user.setPassword(null);
+		User user3 = service.goLogin(user);
+		if (user3 == null) {
+			return JsonMsg.error().addInfo("login_error", "该用户不存在");
+		}else {
+			if (user2 == null) {
+				return JsonMsg.error().addInfo("login_error", "密码输入错误");
+			}else {
+				session.setAttribute(ConstantClass.USER_KEY, user2);
+				return JsonMsg.success();
+			}
+		}
 	}
+	
+	/**
+	 * 
+	 * @Title: checkname 
+	 * @Description: 验证姓名唯一
+	 * @param user
+	 * @return
+	 * @return: boolean
+	 * @date: 2019年11月17日下午8:00:49
+	 */
+	@ResponseBody
+	@GetMapping("/checkname")
+	public boolean checkname(User user) {
+		return service.getUserByName(user);
+	}
+	
+	/**
+	 * 
+	 * @Title: getCodeStr 
+	 * @Description: 获取随机验证码
+	 * @param session
+	 * @param response
+	 * @throws Exception
+	 * @return: void
+	 * @date: 2019年11月18日下午4:24:19
+	 */
+	@GetMapping("/getCodeStr")
+	public void getCodeStr(HttpSession session,HttpServletResponse response) throws Exception {
+		CaptchaUtil capt = new CaptchaUtil();
+		String code = capt.getStr();
+		session.setAttribute("code", code);
+		ImageIO.write(capt.getImage(), "jpg", response.getOutputStream());
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: outLogin 
+	 * @Description: 退出登入
+	 * @param session
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月18日下午4:27:23
+	 */
+	@GetMapping("/outLogin")
+	public String outLogin(HttpSession session) {
+		session.removeAttribute(ConstantClass.USER_KEY);
+		return "redirect:/index";
+	}
+	
+	/**
+	 * 
+	 * @Title: toMyCenter 
+	 * @Description: 去个人中心
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月18日下午6:50:46
+	 */
+	@GetMapping("/myCenter")
+	public String toMyCenter() {
+		return "user/myCenter";
+	}
+	
+	
+	
+	
 	
 }

@@ -69,5 +69,15 @@ public interface UserService {
 	 */
 	User goLogin(User user);
 
+	/** 
+	 * @Title: getUserByName 
+	 * @Description: TODO
+	 * @param user
+	 * @return
+	 * @return: boolean
+	 * @date: 2019年11月17日下午7:43:32
+	 */
+	boolean getUserByName(User user);
+
 
 }

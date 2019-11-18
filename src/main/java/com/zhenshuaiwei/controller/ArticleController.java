@@ -10,21 +10,28 @@
  */
 package com.zhenshuaiwei.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
+import com.zhenshuaiwei.common.CmsAssert;
+import com.zhenshuaiwei.common.ConstantClass;
+import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.Article;
 import com.zhenshuaiwei.entity.Category;
 import com.zhenshuaiwei.entity.Channel;
+import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.ArticleService;
 import com.zhenshuaiwei.service.CategoryService;
 import com.zhenshuaiwei.service.ChannelService;
@@ -141,6 +148,31 @@ public class ArticleController {
 		m.addAttribute("chId",chId);
 		m.addAttribute("info",info);
 		return "article/channelCate2";
+	}
+	
+	@GetMapping("/myArticle")
+	public String myArticle(Model m,HttpSession session,@RequestParam(defaultValue = "1")String page) {
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		if (user != null){
+			PageInfo<Article> info = articleService.getMyArticle(page,user.getId());
+			m.addAttribute("info", info);
+		}
+		return "user/myArticle";
+	} 
+	
+	@ResponseBody
+	@PostMapping("/deleteArticle")
+	public JsonMsg deleteArticle(int id,HttpSession session) {
+		CmsAssert.AssertTrue(id !=0 , "文章id必须大于零");
+		Article article = articleService.articleIsNull(id);
+		CmsAssert.AssertTrue(article != null , "文章不存在");
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		CmsAssert.AssertTrue(article.getUser().getId() == user.getId() || user.getRole() == ConstantClass.USER_ROLE_ADMIN, "无权限删除");
+		if (articleService.deleteArticle(id) > 0) {
+			return JsonMsg.success();
+		}else {
+			return JsonMsg.error();
+		}
 	}
 
 }

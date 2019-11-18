@@ -32,7 +32,6 @@ import com.zhenshuaiwei.service.ChannelService;
  * @date: 2019年11月13日 上午11:32:56  
  */
 @Controller
-@RequestMapping("/system")
 public class SystemController {
 	
 	/**
@@ -51,7 +50,7 @@ public class SystemController {
 	 * @return: String
 	 * @date: 2019年11月13日上午11:47:19
 	 */
-	@GetMapping("/mangerIndex")
+	@GetMapping("/admin")
 	public String toMangerIndex() {
 		return "system/index";
 	}

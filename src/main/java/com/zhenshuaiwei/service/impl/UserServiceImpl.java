@@ -78,9 +78,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User goLogin(User user) {
+		if (user.getPassword() != null) {
+			user.setPassword(Md5.password(user.getPassword(), user.getPassword().substring(0, 3)));
+		}
 		User user2 = mapper.goLogin(user);
 //		CmsAssert.AssertTrue(user2 != null, "用户名或密码输入错误");
 		return user2;
+	}
+
+	@Override
+	public boolean getUserByName(User user) {
+		User userByName = mapper.getUserByName(user.getUsername());
+		return userByName == null;
 	}
 
 }
