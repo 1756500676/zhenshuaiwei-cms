@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.zhenshuaiwei.dao.CommentMapper">
+  		<resultMap type="com.zhenshuaiwei.entity.Comment" id="CommentMap">
+  			<id column="id" property="id" />
+  			<association property="article" column="articleId" select="com.zhenshuaiwei.dao.ArticleMapper.articleIsNull"></association>
+  			<association property="user" column="userId" select="com.zhenshuaiwei.dao.UserMapper.getUserById"></association>
+  		</resultMap>
+
+ 		<!-- 查询文章的评论 --> 
+  		<select id="getArticleCommentById" resultMap="CommentMap">
+  			SELECT  id,
+					articleId,
+					userId,
+					content,
+					likeNum,
+					created
+			FROM cms_comment 
+			WHERE articleId=${value}	
+			ORDER BY likeNum desc,created DESC
+  		</select>
+  		<!-- 发布评论 -->
+  		<insert id="pushComment">
+  			insert into cms_comment set 
+										articleId=#{articleId},
+										userId=#{userId},
+										content=#{content},
+										created=now()
+  		</insert>
+  		
+  		<!-- 获取我的评论 -->
+  		<select id="getMyComment" resultMap="CommentMap">
+  			select id,
+					articleId,
+					userId,
+					content,
+					likeNum,
+					created
+  			from cms_comment 
+  			where userId = ${value}
+  		</select>
+  </mapper>
+  
+  

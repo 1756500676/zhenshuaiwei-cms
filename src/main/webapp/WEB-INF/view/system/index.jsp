@@ -54,8 +54,8 @@
 								<li class="active"><a href="#"><span
 										class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										用户设置</a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-user"
-										aria-hidden="true"></span> 个人信息</a></li>
+								<li><a href="/user/myCenter"><span class="glyphicon glyphicon-user"
+										aria-hidden="true"></span> 个人中心</a></li>
 								<li class="hrms_logout"><a href="/user/outLogin"><span
 										class="glyphicon glyphicon-off" aria-hidden="true"></span>
 										账号退出</a></li>
@@ -123,12 +123,14 @@
 			<!-- /.hrms_body -->
 
 
-			<nav class="navbar navbar-inverse navbar-fixed-bottom"
-				role="navigation">
-			<div align="center">
-				<font color="blue" size="5"> ----八维大数据学院1707D--- </font>
-			</div>
+			<nav class="navbar navbar-fixed-bottom" role="navigation">
+				<div align="center">
+					  <footer class="footer">
+	                © 2019 GigData - 1707D <i class="mdi mdi-heart text-danger"></i> ZSW.
+	           		 </footer>
+				</div>
 			</nav>
+			
 
 		</div>
 	</div>

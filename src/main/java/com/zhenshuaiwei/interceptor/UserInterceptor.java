@@ -38,9 +38,18 @@ public class UserInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		//获取请求头X-Requested-With判断是否为ajax请求
+		String type = request.getHeader("X-Requested-With") == null ? "" : request.getHeader("X-Requested-With");
 		User user = (User) request.getSession().getAttribute(ConstantClass.USER_KEY);
 		if (user == null) {
-			response.sendRedirect("/user/login");
+			if ("XMLHttpRequest".equals(type)) {
+				 //处理AJAX请求，设置响应头信息
+	            response.setHeader("REDIRECT", "REDIRECT");
+	            /*需要跳转页面的URL*/
+	            response.setHeader("CONTEXTPATH", request.getContextPath()+"/login");
+			}else {
+				response.sendRedirect("/login?choose=login");
+			}
 			return false;
 		}
 		if (request.getServletPath().contains("admin") && user.getRole() != ConstantClass.USER_ROLE_ADMIN) {

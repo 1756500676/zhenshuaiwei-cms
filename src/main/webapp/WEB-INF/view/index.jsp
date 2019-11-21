@@ -48,14 +48,18 @@
 						<div class="carousel-inner">
 							<div class="item active" style="widows: 800px;height: 300px">
 								<a href="#" class="thumbnail">
+									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/index1.jpg" alt="Second slide">
+								</a>
+							</div>
+							<div class="item " style="widows: 800px;height: 300px">
+								<a href="#" class="thumbnail">
 									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/IMG_0832.JPG" alt="First slide">
 								</a>
 							</div>
-							<div class="item" style="widows: 800px;height: 300px">
-								<img style="widows: 800px;height: 300px" src="/resource/images/avatar1.jpg" alt="Second slide">
-							</div>
 							<div class="item" style="widows: 800px;height: 300px"> 
-								<img  style="widows: 800px;height: 300px" src="/resource/images/bg05.jpg" alt="Third slide">
+								<a href="#" class="thumbnail">
+									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/index2.jpg" alt="Second slide">
+								</a>
 							</div>
 						</div>
 						<!-- 轮播（Carousel）导航 -->
@@ -69,7 +73,7 @@
 						</a>
 					</div>
 					<!-- 放热门文章的列表 -->
-					<div class="container" >
+					<div class="container" style="width: 780px" >
 						<c:forEach items="${info.list }" var="hotArticle">
 							<div class=row>
 								 <hr>
@@ -83,6 +87,7 @@
 									分类:<a href="/article/getArticleByCG?chId=${hotArticle.channel.id }&caId=${hotArticle.category.id }">${hotArticle.category.name}</a>
 									<br>
 								 	<a href="#">${hotArticle.user.username }</a> 发布于<fmt:formatDate value="${hotArticle.created }" pattern="YYYY年MM月dd日"/>
+								 	<b class="pull-right">${hotArticle.hits }次阅读</b>
 								</div>
 							</div>
 						</c:forEach>
@@ -176,6 +181,13 @@
 		</div>
 		
 	</div>
+	<nav class="navbar navbar-fixed-bottom" role="navigation">
+		<div align="center">
+			  <footer class="footer">
+	              © 2019 GigData - 1707D <i class="mdi mdi-heart text-danger"></i> ZSW.
+	         		 </footer>
+		</div>
+	</nav>
 
 </div>
 

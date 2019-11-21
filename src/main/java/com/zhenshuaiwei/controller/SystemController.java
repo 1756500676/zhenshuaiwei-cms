@@ -12,7 +12,6 @@ package com.zhenshuaiwei.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.pagehelper.PageInfo;
-import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.entity.Article;
 import com.zhenshuaiwei.entity.Channel;
-import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.ArticleService;
 import com.zhenshuaiwei.service.ChannelService;
 
@@ -86,4 +83,17 @@ public class SystemController {
 		return "error";
 	}
 	
+	/**
+	 * 
+	 * @Title: toLogin 
+	 * @Description: 去登入页面
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月17日下午8:00:09
+	 */
+	@GetMapping("/login")
+	public String toLogin(Model m,String choose) {
+		m.addAttribute("choose", choose);
+		return "user/newLogin";
+	}
 }

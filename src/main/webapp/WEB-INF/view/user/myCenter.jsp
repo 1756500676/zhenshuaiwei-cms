@@ -36,6 +36,7 @@
 						<ul class="nav nav-pills nav-stacked " id="collapse_article" >
 							<li role="presentation"><a href="javascript:showContext('/article/postArticle')"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;&nbsp;编写文章</a></li>
 							<li role="presentation"><a href="javascript:showContext('/article/myArticle')"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;&nbsp;我的文章</a></li>
+							<li role="presentation"><a href="javascript:showContext('/comment/myComment')"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;&nbsp;我的评论</a></li>
 						</ul>
 					</li>
 				</ul>

@@ -36,10 +36,12 @@ import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.Article;
 import com.zhenshuaiwei.entity.Category;
 import com.zhenshuaiwei.entity.Channel;
+import com.zhenshuaiwei.entity.Comment;
 import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.ArticleService;
 import com.zhenshuaiwei.service.CategoryService;
 import com.zhenshuaiwei.service.ChannelService;
+import com.zhenshuaiwei.service.CommentService;
 
 /** 
  * @ClassName: ArticleController 
@@ -51,14 +53,21 @@ import com.zhenshuaiwei.service.ChannelService;
 @RequestMapping("/article")
 public class ArticleController {
 	
+	//文章
 	@Autowired
 	private ArticleService articleService;
 	
+	//分类
 	@Autowired
 	private CategoryService categoryService; 
 	
+	//频道
 	@Autowired
 	private ChannelService channelService;
+	
+	@Autowired
+	private CommentService commentService;
+	
 	/**
 	 * 日期格式工具
 	 */
@@ -78,9 +87,9 @@ public class ArticleController {
 		System.out.println("protal=========================="+protal);
 		//这里是获取那个页面点击的进入详情,之后的上一章下一张就是按照这个换的
 		List<Article> list =null;
-		if ("hot".equals(protal)) {
+		if (ConstantClass.PROTAL_HOT.equals(protal)) {
 			list = articleService.getHotArticleList(0).getList();
-		}else if ("new".equals(protal)) {
+		}else if (ConstantClass.PROTAL_NEW.equals(protal)) {
 			list = articleService.getNewArticleList(0);
 		}else if (Pattern.matches("\\d+,\\d+", protal)) {
 			String[] split = protal.split(",");
@@ -117,7 +126,8 @@ public class ArticleController {
 		}
 		
 		Article article = articleService.getArticleById(articleId);
-		System.out.println(article);
+		List<Comment> commentList = commentService.getArticleCommentById(articleId);
+		m.addAttribute("commentList", commentList);
 		m.addAttribute("protal", protal);
 		m.addAttribute("article", article);
 		return "article/articleDetails";
@@ -382,6 +392,16 @@ public class ArticleController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @Title: updateArticle 
+	 * @Description: 获取文章详情去往修改页面
+	 * @param m
+	 * @param id
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月21日上午10:56:48
+	 */
 	@GetMapping("/updateArticle")
 	public String updateArticle(Model m,int id) {
 		List<Channel> channelList = channelService.getChannelList();
@@ -392,6 +412,17 @@ public class ArticleController {
 		return "article/updateArticle";
 	}
 	
+	/**
+	 * 
+	 * @Title: updateArticle 
+	 * @Description: 修改文章
+	 * @param session
+	 * @param file
+	 * @param article
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月21日上午10:57:06
+	 */
 	@ResponseBody
 	@PostMapping("/updateArticle")
 	public JsonMsg updateArticle(HttpSession session,MultipartFile file,Article article) {
@@ -409,6 +440,8 @@ public class ArticleController {
 			return JsonMsg.error();
 		}
 	}
+	
+	
 	
 	
 	

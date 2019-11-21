@@ -18,6 +18,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.zhenshuaiwei.entity.Article;
+import com.zhenshuaiwei.entity.Comment;
 
 /** 
  * @ClassName: ArticleMapper 
@@ -163,6 +164,25 @@ public interface ArticleMapper {
 	 * @date: 2019年11月20日下午8:17:49
 	 */
 	int updateArticle(Article article);
+
+	/** 
+	 * @Title: updateArticleCommentCntUp 
+	 * @Description: TODO
+	 * @return: void
+	 * @date: 2019年11月21日下午1:06:56
+	 */
+	@Update("update cms_article set commentCnt = commentCnt + 1 where id = #{articleId}")
+	int updateArticleCommentCntUp(Comment comment);
+
+	/** 
+	 * @Title: updateArticleCommentCntHitsUp 
+	 * @Description: TODO
+	 * @param id
+	 * @return: void
+	 * @date: 2019年11月21日下午3:38:44
+	 */
+	@Update("update cms_article set hits = hits + 1 where id = ${value}")
+	int updateArticleCommentCntHitsUp(Integer id);
 
 
 }

@@ -125,18 +125,7 @@ public class UserController {
 		return "/user/register";
 	}
 	
-	/**
-	 * 
-	 * @Title: toLogin 
-	 * @Description: 去登入页面
-	 * @return
-	 * @return: String
-	 * @date: 2019年11月17日下午8:00:09
-	 */
-	@GetMapping("/login")
-	public String toLogin() {
-		return "user/login";
-	}
+	
 	
 	/**
 	 * 
