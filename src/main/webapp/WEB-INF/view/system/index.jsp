@@ -56,7 +56,7 @@
 										用户设置</a></li>
 								<li><a href="#"><span class="glyphicon glyphicon-user"
 										aria-hidden="true"></span> 个人信息</a></li>
-								<li class="hrms_logout"><a href="#"><span
+								<li class="hrms_logout"><a href="/user/outLogin"><span
 										class="glyphicon glyphicon-off" aria-hidden="true"></span>
 										账号退出</a></li>
 							</ul></li>
@@ -77,15 +77,16 @@
 				<ul class="nav nav-pills nav-stacked index_sidebar">
 					<li role="presentation" class="active"><a href="#"> 
 							<i class="ti-home" aria-hidden="true">首页</i>
+							<input type="hidden">
 					</a></li>
 				</ul>
 				<ul class="nav nav-pills nav-stacked article_sidebar">
 					<li role="presentation" class="active">
 						<a href="#" data-toggle="collapse" data-target="#collapse_article">
-							 <span class="ion-android-note" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文章管理<span class="pull-right"><i class="ion-chevron-down"></i></span>
+							 <span class="ion-android-note " aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文章管理<span class="pull-right"><i class="ion-chevron-down"></i></span>
 						</a>
-						<ul class="nav nav-pills nav-stacked collapse" id="collapse_article" >
-							<li role="presentation"><a href="#"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;&nbsp;编写文章</a></li>
+						<ul class="nav nav-pills nav-stacked " id="collapse_article" >
+							<li role="presentation" id="ckwz" ><a href = "javascript:showContext('article/articleList','ckwz')"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;&nbsp;查看文章</a></li>
 							<li role="presentation"><a href="#"><i class="mdi mdi-lightbulb-outline"></i>&nbsp;&nbsp;&nbsp;待审核文章<span class=" badge badge-info pull-right ">3</span></a></li>
 						</ul>
 					</li>
@@ -107,8 +108,8 @@
 							<span class="mdi mdi-account-settings-variant" aria-hidden="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户管理</span><span class="pull-right"><i class="ion-chevron-down"></i></span>
 					</a>
 						<ul class="nav nav-pills nav-stacked collapse" id="collapse_user">
-							<li role="presentation"><a href="javascript:shouContext('/user/users')"><i class="mdi mdi-account-multiple"></i>&nbsp;&nbsp;&nbsp;用户列表</a></li>
-							<li role="presentation"><a href="#"><i class="mdi mdi-account-plus"></i>&nbsp;&nbsp;&nbsp;添加用户</a></li>
+							<li role="presentation" id="yhgl"><a href="javascript:showContext('/user/users','yhgl')"><i class="mdi mdi-account-multiple"></i>&nbsp;&nbsp;&nbsp;用户列表</a></li>
+							<li role="presentation" class=""><a href="#"><i class="mdi mdi-account-plus"></i>&nbsp;&nbsp;&nbsp;添加用户</a></li>
 						</ul></li>
 				</ul>
 
@@ -133,8 +134,13 @@
 	</div>
 	<!-- js -->
 	<script type="text/javascript">
-		function shouContext(url) {
-			$("#context").load(url);
+		$(function() {
+			showContext("article/articleList","ckwz");
+		})
+		
+		function showContext(url,liId) {
+			$("#"+liId).addClass("list-group-item-success");
+ 			$("#context").load(url);
 		}
 	</script>
 </body>

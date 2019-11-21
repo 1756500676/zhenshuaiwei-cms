@@ -45,12 +45,16 @@
     	<mvc:interceptor>
     	<mvc:mapping path="/**"/>
     	<mvc:exclude-mapping path="/user/login"/>
+    	<mvc:exclude-mapping path="/user/toRegister"/>
     	<mvc:exclude-mapping path="/user/getCodeStr"/>
    		<mvc:exclude-mapping path="/html/**"/>
 		<mvc:exclude-mapping path="/static/**"/>
 		<mvc:exclude-mapping path="/pic/**"/>
 		<mvc:exclude-mapping path="/"/>
 		<mvc:exclude-mapping path="/index"/>
+		<mvc:exclude-mapping path="/error"/>
+		<mvc:exclude-mapping path="/article/getArticleByCG"/>
+		<mvc:exclude-mapping path="/article/getArticleById"/>
 		<mvc:exclude-mapping path="/user/goLogin"/>
 		<mvc:exclude-mapping path="/user/register"/>
 		<mvc:exclude-mapping path="/user/checkname"/>	

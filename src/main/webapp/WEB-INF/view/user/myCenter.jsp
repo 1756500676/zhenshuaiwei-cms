@@ -34,7 +34,7 @@
 							 <span class="ion-android-note" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文章管理<span class="pull-right"><i class="ion-chevron-down"></i></span>
 						</a>
 						<ul class="nav nav-pills nav-stacked " id="collapse_article" >
-							<li role="presentation"><a href="#"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;&nbsp;编写文章</a></li>
+							<li role="presentation"><a href="javascript:showContext('/article/postArticle')"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;&nbsp;编写文章</a></li>
 							<li role="presentation"><a href="javascript:showContext('/article/myArticle')"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;&nbsp;我的文章</a></li>
 						</ul>
 					</li>
@@ -67,6 +67,10 @@
 			<!-- 中间员工表格信息展示内容 -->
 			<div class="col-sm-10 " id="context" >
 			
+				<div id="kindEditor" style="display: none">
+				   <!-- 引入kindEditor的样式 -->
+				  <jsp:include page="/static/kindeditor/jsp/demo.jsp"></jsp:include>
+              </div>
 			</div>
 			<!-- /.hrms_body -->
 

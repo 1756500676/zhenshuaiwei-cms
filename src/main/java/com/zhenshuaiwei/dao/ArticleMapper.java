@@ -93,5 +93,76 @@ public interface ArticleMapper {
 	 */
 	Article articleIsNull(int id);
 
+	/** 
+	 * @Title: getAllArticle 
+	 * @Description: TODO
+	 * @param status
+	 * @return: void
+	 * @date: 2019年11月19日下午1:55:39
+	 */
+	List<Article> getAllArticle(int status);
+
+	/** 
+	 * @Title: getCheckArticleById 
+	 * @Description: TODO
+	 * @param id
+	 * @return: void
+	 * @date: 2019年11月19日下午7:16:16
+	 */
+	Article getCheckArticleById(int id);
+
+	/** 
+	 * @Title: checkArticleStatus 
+	 * @Description: TODO
+	 * @param id
+	 * @param status
+	 * @return: void
+	 * @date: 2019年11月19日下午7:36:54
+	 */
+	@Update("UPDATE cms_article set status = #{status} where id = #{id}")
+	int checkArticleStatus(@Param("id")int id, @Param("status")String status);
+
+	/** 
+	 * @Title: checkArticleHot 
+	 * @Description: TODO
+	 * @param id
+	 * @param hot
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月19日下午8:09:06
+	 */
+	@Update("UPDATE cms_article set hot = #{hot} where id = #{id}")
+	int checkArticleHot(@Param("id")int id, @Param("hot")String hot);
+
+	/** 
+	 * @Title: getArticleNotCheck 
+	 * @Description: TODO
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月20日上午8:41:01
+	 */
+	@Select("select count(id) from cms_article where status=0 and deleted = 0")
+	int getArticleNotCheck();
+
+	/** 
+	 * @Title: addArticle 
+	 * @Description: 添加文章
+	 * @param article
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月20日下午6:31:00
+	 */
+	int addArticle(Article article);
+
+	/** 
+	 * @Title: updateArticle 
+	 * @Description: TODO
+	 * @param article
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月20日下午8:17:49
+	 */
+	int updateArticle(Article article);
+
 
 }

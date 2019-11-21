@@ -10,7 +10,11 @@
  */
 package com.zhenshuaiwei.controller;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.common.CmsAssert;
@@ -54,7 +59,10 @@ public class ArticleController {
 	
 	@Autowired
 	private ChannelService channelService;
-	
+	/**
+	 * 日期格式工具
+	 */
+	private SimpleDateFormat sdf;
 	/**
 	 * 
 	 * @Title: getArticleById 
@@ -150,6 +158,17 @@ public class ArticleController {
 		return "article/channelCate2";
 	}
 	
+	/**
+	 * 
+	 * @Title: myArticle 
+	 * @Description: 获取我的文章
+	 * @param m
+	 * @param session
+	 * @param page
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月19日下午1:48:33
+	 */
 	@GetMapping("/myArticle")
 	public String myArticle(Model m,HttpSession session,@RequestParam(defaultValue = "1")String page) {
 		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
@@ -160,6 +179,16 @@ public class ArticleController {
 		return "user/myArticle";
 	} 
 	
+	/**
+	 * 
+	 * @Title: deleteArticle 
+	 * @Description: 删除文章
+	 * @param id
+	 * @param session
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月19日下午1:48:46
+	 */
 	@ResponseBody
 	@PostMapping("/deleteArticle")
 	public JsonMsg deleteArticle(int id,HttpSession session) {
@@ -175,4 +204,213 @@ public class ArticleController {
 		}
 	}
 
+	/**
+	 * 
+	 * @Title: articleList 
+	 * @Description: 管理员获取所有文章
+	 * @param m
+	 * @param status
+	 * @param page
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月19日下午7:02:49
+	 */
+	@GetMapping("/articleList")
+	public String articleList(Model m,@RequestParam(defaultValue = "2")int status,
+									  @RequestParam(defaultValue = "1")int page) {
+		PageInfo<Article> info = articleService.getAllArticle(status,page);
+		int notCheckCount = articleService.getArticleNotCheck();
+		m.addAttribute("status", status);
+		m.addAttribute("info", info);
+		m.addAttribute("notCheckCount", notCheckCount);
+		return "article/allArticleList";
+	}
+	
+	/**
+	 * @Title: getCheckArticle 
+	 * @Description: 获取审核文章
+	 * @param id
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月19日下午7:14:24
+	 */
+	@PostMapping("/getCheckArticle")
+	@ResponseBody
+	public JsonMsg getCheckArticle(int id) {
+		Article article = articleService.getCheckArticleById(id);
+		CmsAssert.AssertTrue(article != null, "该文章不存在");
+		return JsonMsg.success().addInfo("article", article);
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: checkArticleStatus 
+	 * @Description: 修改文章的状态
+	 * @param id
+	 * @param status
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月19日下午8:03:11
+	 */
+	@ResponseBody
+	@PostMapping("/checkArticleStatus")
+	public JsonMsg checkArticleStatus(int id,String status) {
+		Article article = articleService.getCheckArticleById(id);
+		CmsAssert.AssertTrue(article != null, "该文章不存在");
+		CmsAssert.AssertTrue(!status.equals(article.getStatus()), "状态无需更该");
+		articleService.checkArticleStatus(id,status);
+		return JsonMsg.success();
+	}
+	
+	/**
+	 * 
+	 * @Title: checkArticleHot 
+	 * @Description: 设置文章的热门状态
+	 * @param id
+	 * @param hot
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月20日下午1:23:58
+	 */
+	@ResponseBody
+	@PostMapping("/checkArticleHot")
+	public JsonMsg checkArticleHot(int id,String hot) {
+		Article article = articleService.getCheckArticleById(id);
+		CmsAssert.AssertTrue(article != null, "该文章不存在");
+		System.out.println(article.getHot() + "===="+hot);
+		CmsAssert.AssertTrue(!hot.equals(article.getHot()), "状态无需更该");
+		articleService.checkArticleHot(id,hot);
+		return JsonMsg.success();
+	}
+	
+	/**
+	 * 
+	 * @Title: postArticle 
+	 * @Description: 去往添加文章
+	 * @param m
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月20日下午7:25:04
+	 */
+	@GetMapping("/postArticle")
+	public String postArticle(Model m) {
+		List<Channel> channelList = channelService.getChannelList();
+		m.addAttribute("channelList", channelList);
+		return "article/publish";
+	}
+	
+	/**
+	 * 
+	 * @Title: postArticle 
+	 * @Description: 添加文章
+	 * @param session
+	 * @param file
+	 * @param article
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月20日下午7:25:24
+	 */
+	@ResponseBody
+	@PostMapping("/postArticle")
+	public JsonMsg postArticle(HttpSession session,MultipartFile file,Article article) {
+		//获取文章标题图片
+		if (!file.isEmpty()) {
+			String fileUrl = processFile(file);
+			article.setPicture(fileUrl);
+		}
+		User user = (User)session.getAttribute(ConstantClass.USER_KEY);
+		article.setUserId(String.valueOf(user.getId()));
+		int result = articleService.addArticle(article);
+		if (result >0 ) {
+			return JsonMsg.success();
+		}else {
+			return JsonMsg.error();
+		}
+	}
+
+
+	/** 
+	 * @Title: processFile 
+	 * @Description: 保存文件
+	 * @param file
+	 * @return 
+	 * @return: void
+	 * @date: 2019年11月20日下午2:39:24
+	 */
+	private String processFile(MultipartFile file) {
+		String suffixName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+		String prefixName = UUID.randomUUID().toString();
+		String fileName = prefixName + suffixName;
+		sdf = new SimpleDateFormat("yyyyMMdd");
+		String path = sdf.format(new Date());
+		
+		File pathFile = new File("d:/pic/"+path);
+		if (!pathFile.exists()) {
+			pathFile.mkdirs();
+		}
+		String newFileName = "d:/pic/"+path+"/"+fileName;
+		System.out.println(newFileName);
+		try {
+			file.transferTo(new File(newFileName));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return path+"/"+fileName;
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @Title: getCategoryByChannel 
+	 * @Description: 根据频道获取分类
+	 * @param chId
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月20日下午6:45:14
+	 */
+	@ResponseBody
+	@PostMapping("/getCategoryByChannel")
+	public JsonMsg getCategoryByChannel(int chId) {
+		List<Category> categorys = categoryService.getCateListByChannelId(chId);
+		if (categorys != null) {
+			return JsonMsg.success().addInfo("categorys", categorys);
+		}else {
+			return JsonMsg.error().addInfo("error", "频道错误");
+		}
+	}
+	
+	@GetMapping("/updateArticle")
+	public String updateArticle(Model m,int id) {
+		List<Channel> channelList = channelService.getChannelList();
+		m.addAttribute("channelList", channelList);
+		Article article = articleService.getCheckArticleById(id);
+		m.addAttribute("article", article);
+		CmsAssert.AssertTrueHtml(article != null, "该文章不存在");
+		return "article/updateArticle";
+	}
+	
+	@ResponseBody
+	@PostMapping("/updateArticle")
+	public JsonMsg updateArticle(HttpSession session,MultipartFile file,Article article) {
+		//获取文章标题图片
+		if (!file.isEmpty()) {
+			String fileUrl = processFile(file);
+			article.setPicture(fileUrl);
+		}
+		User user = (User)session.getAttribute(ConstantClass.USER_KEY);
+		article.setUserId(String.valueOf(user.getId()));
+		int result = articleService.updateArticle(article);
+		if (result >0 ) {
+			return JsonMsg.success();
+		}else {
+			return JsonMsg.error();
+		}
+	}
+	
+	
+	
+	
 }

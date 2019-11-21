@@ -29,9 +29,9 @@ import com.zhenshuaiwei.service.ArticleService;
  */
 @Service
 public class ArticleServiceImpl implements ArticleService {
-	
 	@Autowired
 	private ArticleMapper mapper;
+	
 
 	@Override
 	public List<Article> getNewArticleList(int count) {
@@ -75,6 +75,43 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public Article articleIsNull(int id) {
 		return mapper.articleIsNull(id);
+	}
+
+	@Override
+	public PageInfo<Article> getAllArticle(int status, int page) {
+		PageHelper.startPage(page, 5);
+		List<Article> list = mapper.getAllArticle(status);
+		return new PageInfo<Article>(list);
+	}
+
+	@Override
+	public Article getCheckArticleById(int id) {
+		return mapper.getCheckArticleById(id);
+	}
+
+	@Override
+	public int checkArticleStatus(int id, String status) {
+		return mapper.checkArticleStatus(id,status);
+	}
+
+	@Override
+	public int checkArticleHot(int id, String hot) {
+		return mapper.checkArticleHot(id,hot);
+	}
+
+	@Override
+	public int getArticleNotCheck() {
+		return mapper.getArticleNotCheck();
+	}
+
+	@Override
+	public int addArticle(Article article) {
+		return mapper.addArticle(article);
+	}
+
+	@Override
+	public int updateArticle(Article article) {
+		return mapper.updateArticle(article);
 	}
 
 }

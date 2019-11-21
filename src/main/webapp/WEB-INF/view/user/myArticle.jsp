@@ -35,7 +35,7 @@
 					</c:choose>
 				</td>
 				<td>
-					<input type="button" class="btn-success" value="修改">
+					<input type="button" class="btn-success" value="修改" onclick="updateArticle(${article.id})">
 					<input type="button" class="btn-danger"  onclick = "deleteArticle(${article.id})" value="删除">
 				</td>
 			</tr>
@@ -55,7 +55,7 @@
 				if (data.status == 100) {
 					alert("删除成功");
 				}else{
-					alert("删除失败");
+					alert(data.info.error);
 				}			
 					$("#context").load("/article/myArticle");
 			}
@@ -64,6 +64,10 @@
 	function goPage(page) {
 		var url = "/article/myArticle?page="+page;
 		$("#context").load(url);
+	}
+	
+	function updateArticle(id) {
+		$("#context").load("/article/updateArticle?id="+id);
 	}
 	
 	

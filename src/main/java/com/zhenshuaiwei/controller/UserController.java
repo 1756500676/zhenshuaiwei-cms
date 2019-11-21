@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
+import com.zhenshuaiwei.common.CmsAssert;
 import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.User;
@@ -121,7 +122,7 @@ public class UserController {
 	 */
 	@GetMapping("/toRegister")
 	public String toRegister() {
-		return "user/register";
+		return "/user/register";
 	}
 	
 	/**
@@ -151,24 +152,18 @@ public class UserController {
 	@PostMapping("/goLogin")
 	public JsonMsg goLogin(HttpSession session,User user,String code) {
 		String code2 = (String) session.getAttribute("code");
-		if (!code2.equalsIgnoreCase(code)) {
-			return JsonMsg.error().addInfo("login_error", "验证码输入错误");
-		}
+		CmsAssert.AssertTrue(code2.equalsIgnoreCase(code), "验证码输入错误");
 		User user2 = service.goLogin(user);
 		user.setPassword(null);
 		User user3 = service.goLogin(user);
-		if (user3 == null) {
-			return JsonMsg.error().addInfo("login_error", "该用户不存在");
-		}else {
-			if (user2 == null) {
-				return JsonMsg.error().addInfo("login_error", "密码输入错误");
-			}else {
-				session.setAttribute(ConstantClass.USER_KEY, user2);
-				return JsonMsg.success();
-			}
+		CmsAssert.AssertTrue(user3 != null, "该用户不存在");
+		CmsAssert.AssertTrue(user2 != null, "密码输入错误");
+		session.setAttribute(ConstantClass.USER_KEY, user2);
+		if (user2.getRole() == ConstantClass.USER_ROLE_ADMIN) {
+			return JsonMsg.success().addInfo("user_admin", true);
 		}
+		return JsonMsg.success();
 	}
-	
 	/**
 	 * 
 	 * @Title: checkname 

@@ -48,9 +48,14 @@ $('#login-button').click(function(event){
 		success:function(data){
 			if (data.status == 100) {
 				alert("登入成功");
-				location = "/index";
+				if (data.info.user_admin) {
+					location = "/admin";
+				}else{
+					location = "/index";
+				}
+				
 			}else{
-				alert(data.info.login_error);
+				alert(data.info.error);
 				location.reload(true);
 			}			
 		}

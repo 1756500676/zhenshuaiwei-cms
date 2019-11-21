@@ -317,7 +317,7 @@
 							<contextPath>/pic</contextPath> <baseResource>d:/pic/</baseResource> </contextHandler> -->
 						<jettyWebAppContext>
 							<!-- 虚拟路径 -->
-							<contextPath>/</contextPath>
+							<contextPath>/pic/</contextPath>
 							<!-- 物理路径 -->
 							<resourceBase>d:/pic/</resourceBase>
 						</jettyWebAppContext>

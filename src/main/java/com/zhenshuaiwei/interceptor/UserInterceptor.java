@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.zhenshuaiwei.common.CmsAssert;
 import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.entity.User;
 
@@ -42,9 +43,9 @@ public class UserInterceptor implements HandlerInterceptor{
 			response.sendRedirect("/user/login");
 			return false;
 		}
-		if (request.getServletPath().contains("admin")) {
-			request.setAttribute("error_login", "只有管理员可访问");
-			request.getRequestDispatcher("/user/index").forward(request, response);
+		if (request.getServletPath().contains("admin") && user.getRole() != ConstantClass.USER_ROLE_ADMIN) {
+			request.setAttribute("error", "只有管理员可访问");
+			request.getRequestDispatcher("error").forward(request, response);
 		}
 		return true;
 	}

@@ -14,7 +14,6 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.entity.Article;
-import com.zhenshuaiwei.entity.Channel;
 
 /** 
  * @ClassName: ArticleService 
@@ -35,7 +34,7 @@ public interface ArticleService {
 
 	/** 
 	 * @Title: getHotArticleList 
-	 * @Description: TODO
+	 * @Description: 获取热门文章
 	 * @return: void
 	 * @date: 2019年11月14日下午2:09:06
 	 */
@@ -43,7 +42,7 @@ public interface ArticleService {
 
 	/** 
 	 * @Title: getArticleById 
-	 * @Description: TODO
+	 * @Description: 查看文章香型
 	 * @param id
 	 * @return: void
 	 * @date: 2019年11月14日下午6:53:57
@@ -52,7 +51,7 @@ public interface ArticleService {
 
 	/** 
 	 * @Title: getArticleByCG 
-	 * @Description: TODO
+	 * @Description: 根据斌到获取文章
 	 * @param chId
 	 * @param caId
 	 * @param page
@@ -63,7 +62,7 @@ public interface ArticleService {
 
 	/** 
 	 * @Title: getMyArticle 
-	 * @Description: TODO
+	 * @Description: 获取我的文章
 	 * @param page
 	 * @param id
 	 * @return: void
@@ -73,7 +72,7 @@ public interface ArticleService {
 
 	/** 
 	 * @Title: deleteArticle 
-	 * @Description: TODO
+	 * @Description: 根据id删除文章
 	 * @param id
 	 * @return: void
 	 * @date: 2019年11月18日下午7:48:45
@@ -82,13 +81,80 @@ public interface ArticleService {
 
 	/** 
 	 * @Title: articleIsNull 
-	 * @Description: TODO
+	 * @Description: 判段文章是否存在
 	 * @param id
 	 * @return
 	 * @return: Article
 	 * @date: 2019年11月18日下午7:57:34
 	 */
 	Article articleIsNull(int id);
+
+	/** 
+	 * @Title: getAllArticle 
+	 * @Description: 获取所有文章
+	 * @param status
+	 * @param page
+	 * @return: void
+	 * @date: 2019年11月19日下午1:54:51
+	 */
+	PageInfo<Article> getAllArticle(int status, int page);
+
+	/** 
+	 * @Title: getCheckArticleById 
+	 * @Description: TODO
+	 * @param id
+	 * @return
+	 * @return: Article
+	 * @date: 2019年11月19日下午7:15:49
+	 */
+	Article getCheckArticleById(int id);
+
+	/** 
+	 * @Title: checkArticleStatus 
+	 * @Description: TODO
+	 * @param id
+	 * @param status
+	 * @return: void
+	 * @date: 2019年11月19日下午7:36:22
+	 */
+	int checkArticleStatus(int id, String status);
+
+	/** 
+	 * @Title: checkArticleHot 
+	 * @Description: 改标热门状态
+	 * @param id
+	 * @param hot
+	 * @return: void
+	 * @date: 2019年11月19日下午8:08:35
+	 */
+	int checkArticleHot(int id, String hot);
+
+	/** 
+	 * @Title: getArticleNotCheck 
+	 * @Description: 获取未审核文章数量
+	 * @return: void
+	 * @date: 2019年11月20日上午8:39:41
+	 */
+	int getArticleNotCheck();
+
+	/** 
+	 * @Title: addArticle 
+	 * @Description: 添加文章
+	 * @param article
+	 * @return: void
+	 * @date: 2019年11月20日下午6:29:42
+	 */
+	int addArticle(Article article);
+
+	/** 
+	 * @Title: updateArticle 
+	 * @Description: TODO
+	 * @param article
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月20日下午8:17:28
+	 */
+	int updateArticle(Article article);
 
 
 

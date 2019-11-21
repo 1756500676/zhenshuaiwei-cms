@@ -69,8 +69,8 @@ $(function () {
           console.log(url);
          //在中间区域显示地址的内容
           $('#center').load(url);
-
       });
       
     })
+    
     

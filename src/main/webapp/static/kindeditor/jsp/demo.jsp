@@ -8,20 +8,20 @@ String htmlData = request.getParameter("content1") != null ? request.getParamete
 <head>
 	<meta charset="utf-8" />
 	<title>KindEditor JSP</title>
-	<link rel="stylesheet" href="/resource/kindeditor/themes/default/default.css" />
-	<link rel="stylesheet" href="/resource/kindeditor/plugins/code/prettify.css" />
-	<script charset="utf-8" src="/resource/kindeditor/plugins/code/prettify.js"></script>
-	<script charset="utf-8" src="/resource/kindeditor/kindeditor-all.js"></script>
-    <script charset="utf-8" src="/resource/kindeditor/lang/zh-CN.js"></script>
+	<link rel="stylesheet" href="/static/kindeditor/themes/default/default.css" />
+	<link rel="stylesheet" href="/static/kindeditor/plugins/code/prettify.css" />
+	<script charset="utf-8" src="/static/kindeditor/plugins/code/prettify.js"></script>
+	<script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/resource/js/jquery-3.2.1.js"></script>
+		src="${pageContext.request.contextPath}/static/js/jquery-3.2.1.js"></script>
 
 	<script>
 		KindEditor.ready(function(K) {
 			window.editor1 = K.create('textarea[name="content1"]', {
-				cssPath : '/resource/kindeditor/plugins/code/prettify.css',
-				uploadJson : '/resource/kindeditor/jsp/upload_json.jsp',
-				fileManagerJson : '/resource/kindeditor/jsp/file_manager_json.jsp',
+				cssPath : '/static/kindeditor/plugins/code/prettify.css',
+				uploadJson : '/static/kindeditor/jsp/upload_json.jsp',
+				fileManagerJson : '/static/kindeditor/jsp/file_manager_json.jsp',
 				allowFileManager : true,
 				afterCreate : function() {
 					var self = this;

@@ -35,6 +35,7 @@
 					commentCnt
 			from cms_article
 			where status = 1 and deleted = 0 and hot = 1
+			order by created desc
 	 	</select>
 	 	<select id="getArticleById" resultMap="ArticleMap">
 	 		select 
@@ -81,17 +82,13 @@
 	 		select 
 	 				id,
 					title,
-					content,
 					picture,
 					channel_id,
 					category_id,
 					user_id,
-					hits,
-					hot,
 					status,
 					deleted,
 					created,
-					updated,
 					commentCnt,
 					articleType
 			from cms_article
@@ -99,6 +96,38 @@
 			And user_id =${value}
 	 	</select>
 	 	<select id="articleIsNull" resultMap="ArticleMap">
+	 		select 
+	 				id,
+					title,
+					user_id,
+					status,
+					deleted
+			from cms_article
+			where deleted = 0 
+			And id = ${value}
+	 	</select>
+	 	
+	 	<!-- 管理员获取所有文章 -->
+	 	<select id="getAllArticle" resultMap="ArticleMap">
+	 		SELECT 
+	 				id,
+					title,
+					channel_id,
+					category_id,
+					hot,
+					user_id,
+					status,
+					deleted,
+					created
+			FROM cms_article
+			WHERE deleted = 0
+			<if test="value != 2">
+				And status = ${value}
+			</if>
+			ORDER BY created DESC
+	 	</select>
+	 	
+	 	<select id="getCheckArticleById" resultMap="ArticleMap">
 	 		select 
 	 				id,
 					title,
@@ -117,6 +146,39 @@
 					articleType
 			from cms_article
 			where deleted = 0 
-			And id = ${value}
+			And id =${value}
 	 	</select>
+	 	
+	 	<insert id="addArticle">
+	 		insert into cms_article set
+									title=#{title},
+									content=#{content},
+									picture=#{picture},
+									channel_id=#{channelId},
+									category_id=#{categoryId},
+									user_id=#{userId},
+									hot=0,
+									status=0,
+									deleted=0,
+									created=now(),
+									updated=now()
+	 	</insert>
+	 	<insert id="updateArticle">
+	 		update cms_article set
+									title=#{title},
+									content=#{content},
+									picture=#{picture},
+									channel_id=#{channelId},
+									category_id=#{categoryId},
+									user_id=#{userId},
+									<if test="hot != null and hot !=''">
+										hot=#{hot},
+									</if>
+									status=0,
+									<if test="deleted != null and deleted !=''">
+										deleted=0,
+									</if>
+									updated=now()
+			where id = #{id}
+	 	</insert>
   </mapper>
