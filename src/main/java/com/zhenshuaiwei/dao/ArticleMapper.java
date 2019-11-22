@@ -13,6 +13,7 @@ package com.zhenshuaiwei.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -183,6 +184,49 @@ public interface ArticleMapper {
 	 */
 	@Update("update cms_article set hits = hits + 1 where id = ${value}")
 	int updateArticleCommentCntHitsUp(Integer id);
+
+	/** 
+	 * @Title: addImages 
+	 * @Description: TODO
+	 * @param article
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月22日下午1:19:23
+	 */
+	int addImages(Article article);
+
+	/** 
+	 * @Title: favoriteArticle 
+	 * @Description: TODO
+	 * @param userId
+	 * @param id
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月22日下午1:46:37
+	 */
+	@Insert("replace cms_favorite set userId=#{userId},articleId=#{id}")
+	int favoriteArticle(@Param("userId")Integer userId, @Param("id")int id);
+
+	/** 
+	 * @Title: getmyFavorite 
+	 * @Description: TODO
+	 * @param id
+	 * @return: void
+	 * @date: 2019年11月22日下午6:24:19
+	 */
+	List<Article> getmyFavorite(Integer id);
+
+	/** 
+	 * @Title: deleteFavorite 
+	 * @Description: TODO
+	 * @param id
+	 * @param articleId
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月22日下午7:10:16
+	 */
+	@Delete("delete from cms_favorite where userId=#{id} and articleId=#{articleId}")
+	int deleteFavorite(@Param("id")Integer id, @Param("articleId")int articleId);
 
 
 }

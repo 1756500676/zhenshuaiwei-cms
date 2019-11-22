@@ -42,8 +42,8 @@
         <form action="" id="loginForm">
 	        <div class="cont_form_login"> <a href="#" onClick="ocultar_login_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
 	          <h2>LOGIN</h2>
-	          <input type="text"name="username" placeholder="username" />
-	          <input type="password" name="password" placeholder="Password" />
+	          <input type="text"name="username" placeholder="username" value="17565"/>
+	          <input type="password" name="password" placeholder="Password" value="17565"/>
 	          <img alt="" src="/user/getCodeStr" id="codeImage" onclick="changeCode()">
 			  <input type="text" name="code" placeholder="Code">
 	          <button type="button" class="btn_login" id="login-button">LOGIN</button>
@@ -80,7 +80,11 @@ $('#login-button').click(function(event){
 			if (data.status == 100) {
 				alert("登入成功");
 				if (data.info.user_admin) {
-					location = "/admin";
+					if ("${gotoArticle}" != null && "${gotoArticle}" != "") {
+						location = "article/getArticleById?id=${gotoArticle}";
+					}else{
+						location = "/admin";
+					}
 				}else{
 					location = "/index";
 				}

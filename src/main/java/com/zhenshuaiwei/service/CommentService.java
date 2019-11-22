@@ -30,7 +30,7 @@ public interface CommentService {
 	 * @return: void
 	 * @date: 2019年11月21日上午9:54:36
 	 */
-	List<Comment> getArticleCommentById(Integer articleId);
+	PageInfo<Comment> getArticleCommentById(Integer articleId,int pageNum);
 
 	/** 
 	 * @Title: pushComment 

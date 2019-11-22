@@ -46,5 +46,9 @@ public class ConstantClass {
 	 * 最新文章查看
 	 */
 	public static final String PROTAL_NEW = "new";
+	/**
+	 * 收藏文章
+	 */
+	public static final String PROTAL_FAVORITE= "favorite";
 	
 }

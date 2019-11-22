@@ -19,6 +19,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.dao.ArticleMapper;
 import com.zhenshuaiwei.entity.Article;
+import com.zhenshuaiwei.entity.ArticleType;
 import com.zhenshuaiwei.service.ArticleService;
 
 /** 
@@ -113,6 +114,29 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public int updateArticle(Article article) {
 		return mapper.updateArticle(article);
+	}
+
+	@Override
+	public int addImages(Article article) {
+		article.setArticleType(ArticleType.IMG);
+		return mapper.addImages(article);
+	}
+
+	@Override
+	public int favoriteArticle(Integer userId, int id) {
+		return mapper.favoriteArticle(userId,id);
+	}
+
+	@Override
+	public PageInfo<Article> getmyFavorite(Integer id, int page) {
+		PageHelper.startPage(page, 10);
+		List<Article> list = mapper.getmyFavorite(id);
+		return new PageInfo<Article>(list);
+	}
+
+	@Override
+	public int deleteFavorite(Integer id, int articleId) {
+		return mapper.deleteFavorite(id,articleId);
 	}
 
 }

@@ -156,6 +156,46 @@ public interface ArticleService {
 	 */
 	int updateArticle(Article article);
 
+	/** 
+	 * @Title: addImages 
+	 * @Description: 添加图片集
+	 * @param article
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月22日下午1:18:36
+	 */
+	int addImages(Article article);
+
+	/** 
+	 * @Title: favoriteArticle 
+	 * @Description: TODO
+	 * @param id
+	 * @param id2
+	 * @return: void
+	 * @date: 2019年11月22日下午1:45:56
+	 */
+	int favoriteArticle(Integer id, int id2);
+
+	/** 
+	 * @Title: getmyFavorite 
+	 * @Description: 获取收藏的所有文章
+	 * @param id
+	 * @param page
+	 * @return: void
+	 * @date: 2019年11月22日下午3:34:45
+	 */
+	PageInfo<Article> getmyFavorite(Integer id, int page);
+
+	/** 
+	 * @Title: deleteFavorite 
+	 * @Description: TODO
+	 * @param id
+	 * @param articleId
+	 * @return: void
+	 * @date: 2019年11月22日下午7:09:32
+	 */
+	int deleteFavorite(Integer id, int articleId);
+
 
 
 }

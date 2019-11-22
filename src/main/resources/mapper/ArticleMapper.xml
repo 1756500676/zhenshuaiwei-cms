@@ -6,6 +6,7 @@
   
   		<resultMap type="com.zhenshuaiwei.entity.Article" id="ArticleMap">
   			<id column="id" property="id" />
+  			<result property="articleType" javaType="com.zhenshuaiwei.entity.ArticleType" column="articleType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
   			<association property="channel" column="channel_id" select="com.zhenshuaiwei.dao.ChannelMapper.getChannelById"/>
   			<association property="category" column="category_id" select="com.zhenshuaiwei.dao.CategoryMapper.getCategoryById" />
   			<association property="user" column="user_id" select="com.zhenshuaiwei.dao.UserMapper.getUserById" />
@@ -181,4 +182,39 @@
 									updated=now()
 			where id = #{id}
 	 	</insert>
+	 	<insert id="addImages">
+	 		insert into cms_article set
+									title=#{title},
+									content=#{content},
+									channel_id=#{channelId},
+									category_id=#{categoryId},
+									user_id=#{userId},
+									hot=0,
+									status=0,
+									deleted=0,
+									created=now(),
+									updated=now(),
+									articleType=#{articleType.ordinal}
+									
+	 	</insert>
+	 	
+	 	<select id="getmyFavorite" resultMap="ArticleMap">
+	 		select 
+	 				a.id,
+					title,
+					picture,
+					channel_id,
+					category_id,
+					user_id,
+					status,
+					deleted,
+					created,
+					commentCnt,
+					articleType
+			from cms_article a
+			join cms_favorite f on a.id=f.articleId
+			where deleted = 0 
+			And f.userId =${value}
+	 	</select>
+	 	
   </mapper>

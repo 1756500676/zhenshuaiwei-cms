@@ -16,7 +16,8 @@
 					userId,
 					content,
 					likeNum,
-					created
+					created,
+					created as dateDesc
 			FROM cms_comment 
 			WHERE articleId=${value}	
 			ORDER BY likeNum desc,created DESC
@@ -37,7 +38,8 @@
 					userId,
 					content,
 					likeNum,
-					created
+					created,
+					created as dateDesc
   			from cms_comment 
   			where userId = ${value}
   		</select>

@@ -12,6 +12,7 @@ package com.zhenshuaiwei.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 /** 
  * @ClassName: Article 
@@ -61,143 +62,165 @@ public class Article implements Serializable{
 //	评论的数量
 	private int commentCnt;
 //	文章类型
-	private int articleType;
+	private ArticleType articleType = ArticleType.HTML;
+
+	private List<Images> images;
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public String getPicture() {
 		return picture;
 	}
+
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
+
 	public String getChannelId() {
 		return channelId;
 	}
+
 	public void setChannelId(String channelId) {
 		this.channelId = channelId;
 	}
+
 	public Channel getChannel() {
 		return channel;
 	}
+
 	public void setChannel(Channel channel) {
 		this.channel = channel;
 	}
+
 	public String getCategoryId() {
 		return categoryId;
 	}
+
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
+
 	public Category getCategory() {
 		return category;
 	}
+
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
 	public String getUserId() {
 		return userId;
 	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	public String getHits() {
 		return hits;
 	}
+
 	public void setHits(String hits) {
 		this.hits = hits;
 	}
+
 	public String getHot() {
 		return hot;
 	}
+
 	public void setHot(String hot) {
 		this.hot = hot;
 	}
+
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	public String getDeleted() {
 		return deleted;
 	}
+
 	public void setDeleted(String deleted) {
 		this.deleted = deleted;
 	}
+
 	public Date getCreated() {
 		return created;
 	}
+
 	public void setCreated(Date created) {
 		this.created = created;
 	}
+
 	public Date getUpdated() {
 		return updated;
 	}
+
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
+
 	public int getCommentCnt() {
 		return commentCnt;
 	}
+
 	public void setCommentCnt(int commentCnt) {
 		this.commentCnt = commentCnt;
 	}
-	public int getArticleType() {
+
+	public ArticleType getArticleType() {
 		return articleType;
 	}
-	public void setArticleType(int articleType) {
+
+	public void setArticleType(ArticleType articleType) {
 		this.articleType = articleType;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+
+	public List<Images> getImages() {
+		return images;
 	}
-	/** 
-	 * @Title:Article
-	 * @Description:TODO 
-	 * @param id
-	 * @param title
-	 * @param content
-	 * @param picture
-	 * @param channelId
-	 * @param channel
-	 * @param categoryId
-	 * @param category
-	 * @param userId
-	 * @param user
-	 * @param hits
-	 * @param hot
-	 * @param status
-	 * @param deleted
-	 * @param created
-	 * @param updated
-	 * @param commentCnt
-	 * @param articleType 
-	 */
+
+	public void setImages(List<Images> images) {
+		this.images = images;
+	}
+
 	public Article(Integer id, String title, String content, String picture, String channelId, Channel channel,
 			String categoryId, Category category, String userId, User user, String hits, String hot, String status,
-			String deleted, Date created, Date updated, int commentCnt, int articleType) {
+			String deleted, Date created, Date updated, int commentCnt, ArticleType articleType, List<Images> images) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -217,32 +240,33 @@ public class Article implements Serializable{
 		this.updated = updated;
 		this.commentCnt = commentCnt;
 		this.articleType = articleType;
+		this.images = images;
 	}
-	/** 
-	 * @Title:Article
-	 * @Description:TODO  
-	 */
+
 	public Article() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	@Override
 	public String toString() {
 		return "Article [id=" + id + ", title=" + title + ", content=" + content + ", picture=" + picture
 				+ ", channelId=" + channelId + ", channel=" + channel + ", categoryId=" + categoryId + ", category="
 				+ category + ", userId=" + userId + ", user=" + user + ", hits=" + hits + ", hot=" + hot + ", status="
 				+ status + ", deleted=" + deleted + ", created=" + created + ", updated=" + updated + ", commentCnt="
-				+ commentCnt + ", articleType=" + articleType + "]";
+				+ commentCnt + ", articleType=" + articleType + ", images=" + images + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((categoryId == null) ? 0 : categoryId.hashCode());
 		result = prime * result + ((channelId == null) ? 0 : channelId.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -252,6 +276,11 @@ public class Article implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Article other = (Article) obj;
+		if (categoryId == null) {
+			if (other.categoryId != null)
+				return false;
+		} else if (!categoryId.equals(other.categoryId))
+			return false;
 		if (channelId == null) {
 			if (other.channelId != null)
 				return false;
@@ -262,14 +291,8 @@ public class Article implements Serializable{
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (userId == null) {
-			if (other.userId != null)
-				return false;
-		} else if (!userId.equals(other.userId))
-			return false;
 		return true;
 	}
-
 	
 	
 }

@@ -92,8 +92,11 @@ public class SystemController {
 	 * @date: 2019年11月17日下午8:00:09
 	 */
 	@GetMapping("/login")
-	public String toLogin(Model m,String choose) {
+	public String toLogin(Model m,String choose,String gotoArticle) {
 		m.addAttribute("choose", choose);
+		if (gotoArticle != null && !"".equals(gotoArticle)) {
+			m.addAttribute("gotoArticle", gotoArticle);
+		}
 		return "user/newLogin";
 	}
 }

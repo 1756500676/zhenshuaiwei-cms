@@ -35,31 +35,7 @@ public class Comment implements Serializable{
 	private String content;
 	private int likeNum;
 	private Date created;
-	
-	
-	
-	
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", articleId=" + articleId + ", article=" + article + ", userId=" + userId
-				+ ", user=" + user + ", content=" + content + ", likeNum=" + likeNum + ", created=" + created + "]";
-	}
-	public Comment() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Comment(Integer id, int articleId, Article article, int userId, User user, String content, int likeNum,
-			Date created) {
-		super();
-		this.id = id;
-		this.articleId = articleId;
-		this.article = article;
-		this.userId = userId;
-		this.user = user;
-		this.content = content;
-		this.likeNum = likeNum;
-		this.created = created;
-	}
+	private String dateDesc;
 	public Integer getId() {
 		return id;
 	}
@@ -108,6 +84,35 @@ public class Comment implements Serializable{
 	public void setCreated(Date created) {
 		this.created = created;
 	}
+	public String getDateDesc() {
+		return dateDesc;
+	}
+	public void setDateDesc(String dateDesc) {
+		this.dateDesc = dateDesc;
+	}
+	public Comment(Integer id, int articleId, Article article, int userId, User user, String content, int likeNum,
+			Date created, String dateDesc) {
+		super();
+		this.id = id;
+		this.articleId = articleId;
+		this.article = article;
+		this.userId = userId;
+		this.user = user;
+		this.content = content;
+		this.likeNum = likeNum;
+		this.created = created;
+		this.dateDesc = dateDesc;
+	}
+	public Comment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public String toString() {
+		return "Comment [id=" + id + ", articleId=" + articleId + ", article=" + article + ", userId=" + userId
+				+ ", user=" + user + ", content=" + content + ", likeNum=" + likeNum + ", created=" + created
+				+ ", dateDesc=" + dateDesc + "]";
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -137,6 +142,9 @@ public class Comment implements Serializable{
 			return false;
 		return true;
 	}
+	
+	
+	
 	
 	
 

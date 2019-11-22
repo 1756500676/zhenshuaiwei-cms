@@ -38,8 +38,10 @@ public class CommentServiceImpl implements CommentService{
 	private ArticleMapper articleMapper;
 	
 	@Override
-	public List<Comment> getArticleCommentById(Integer articleId) {
-		return mapper.getArticleCommentById(articleId);
+	public PageInfo<Comment> getArticleCommentById(Integer articleId,int pageNum) {
+		PageHelper.startPage(pageNum, 5);
+		List<Comment> list = mapper.getArticleCommentById(articleId);
+		return new PageInfo<Comment>(list);
 	}
 
 	@Override

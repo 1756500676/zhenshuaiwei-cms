@@ -12,6 +12,7 @@ package com.zhenshuaiwei.controller;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -30,18 +31,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
 import com.zhenshuaiwei.common.CmsAssert;
 import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.Article;
+import com.zhenshuaiwei.entity.ArticleType;
 import com.zhenshuaiwei.entity.Category;
 import com.zhenshuaiwei.entity.Channel;
 import com.zhenshuaiwei.entity.Comment;
+import com.zhenshuaiwei.entity.Images;
 import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.ArticleService;
 import com.zhenshuaiwei.service.CategoryService;
 import com.zhenshuaiwei.service.ChannelService;
 import com.zhenshuaiwei.service.CommentService;
+import com.zhenshuaiwei.utils.DateDesc;
 
 /** 
  * @ClassName: ArticleController 
@@ -80,29 +85,38 @@ public class ArticleController {
 	 * @param id
 	 * @return
 	 * @return: String
+	 * @throws Exception 
 	 * @date: 2019年11月14日下午7:28:58
 	 */
 	@GetMapping("/getArticleById")
-	public String getArticleById(Model m,Integer id,String protal,String page) {
+	public String getArticleById(Model m,Integer id,String protal,String page,
+								@RequestParam(defaultValue = "1")int pageNum,
+								String scrollTo) throws Exception {
 		System.out.println("protal=========================="+protal);
+		if (scrollTo != null) {
+			m.addAttribute("scrollTo", scrollTo);
+		}
 		//这里是获取那个页面点击的进入详情,之后的上一章下一张就是按照这个换的
 		List<Article> list =null;
-		if (ConstantClass.PROTAL_HOT.equals(protal)) {
-			list = articleService.getHotArticleList(0).getList();
-		}else if (ConstantClass.PROTAL_NEW.equals(protal)) {
-			list = articleService.getNewArticleList(0);
-		}else if (Pattern.matches("\\d+,\\d+", protal)) {
-			String[] split = protal.split(",");
-			list = articleService.getArticleByCG(Integer.parseInt(split[0]), Integer.parseInt(split[1]),0).getList();
-		}else {
-			System.out.println("错误");
+		if (protal != null) {
+			if (ConstantClass.PROTAL_HOT.equals(protal)) {
+				list = articleService.getHotArticleList(0).getList();
+			}else if (ConstantClass.PROTAL_NEW.equals(protal)) {
+				list = articleService.getNewArticleList(0);
+			}else if (Pattern.matches("\\d+,\\d+", protal)) {
+				String[] split = protal.split(",");
+				list = articleService.getArticleByCG(Integer.parseInt(split[0]), Integer.parseInt(split[1]),0).getList();
+			}else {
+				list = articleService.getHotArticleList(0).getList();
+				System.out.println("错误");
+			}
 		}
-		list.forEach(System.out::println);
 		//这里是处理上一张下一张
 		Integer articleId = null;
 		if ("next".equals(page)) {
 			for (int i = 0; i < list.size(); i++) {
-				if (list.get(i).getId() == id) {
+				System.out.println(list.get(i).getId());
+				if (list.get(i).getId().equals(id)) {
 					if (i == (list.size() - 1)) {
 						i=-1;
 					}
@@ -112,7 +126,7 @@ public class ArticleController {
 			}
 		}else if("pre".equals(page)){
 			for (int i = list.size() - 1; i >= 0; i--) {
-				if (list.get(i).getId() == id) {
+				if (list.get(i).getId().equals(id)) {
 					if (i == 0) {
 						i=list.size();
 					}
@@ -124,13 +138,32 @@ public class ArticleController {
 			//第一次进入
 			articleId = id;
 		}
-		
+		System.out.println(articleId+"=============================");
+//		获取文章
 		Article article = articleService.getArticleById(articleId);
-		List<Comment> commentList = commentService.getArticleCommentById(articleId);
-		m.addAttribute("commentList", commentList);
+//		文章评论
+		PageInfo<Comment> info = commentService.getArticleCommentById(articleId,pageNum);
+		List<Comment> commentList = info.getList();
+		m.addAttribute("info", info);
+		for (Comment comment : commentList) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
+			Date date = format.parse(comment.getDateDesc());
+			comment.setDateDesc(DateDesc.format(date));
+			System.out.println(comment);
+		}
 		m.addAttribute("protal", protal);
-		m.addAttribute("article", article);
-		return "article/articleDetails";
+		if (article.getArticleType() == ArticleType.HTML) {
+			m.addAttribute("article", article);
+			return "article/articleDetails";
+		}else {
+			//将图片信息转换为image格式
+			Gson gson = new Gson();
+			List images = gson.fromJson(article.getContent(), List.class);
+			article.setImages(images);
+			System.out.println(article);
+			m.addAttribute("article", article);
+			return "article/imgArticleDetails";
+		}
 	}
 	
 	
@@ -441,9 +474,115 @@ public class ArticleController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @Title: postImage 
+	 * @Description: 去往添加图片页面
+	 * @param m
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月22日下午1:35:07
+	 */
+	@GetMapping("/postImage")
+	public String postImage(Model m) {
+		List<Channel> channelList = channelService.getChannelList();
+		m.addAttribute("channelList", channelList);
+		return "user/postImage";
+	}
 	
 	
 	
+	/**
+	 * 
+	 * @Title: postImage 
+	 * @Description: 添加图片集
+	 * @param session
+	 * @param file
+	 * @param desc
+	 * @param article
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月22日下午1:35:22
+	 */
+	@ResponseBody
+	@PostMapping("/postImage")
+	public JsonMsg postImage(HttpSession session,MultipartFile[] file,String[] desc,Article article) {
+		//获取文章标题图片
+		List<Images> list = new ArrayList<Images>();
+		for (int i = 0; i < desc.length; i++) {
+			String fileUrl = processFile(file[i]);
+			article.setPicture(fileUrl);
+			Images images = new Images(fileUrl, desc[i]);
+			list.add(images);
+		}
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		article.setContent(json);
+		User user = (User)session.getAttribute(ConstantClass.USER_KEY);
+		article.setUserId(String.valueOf(user.getId()));
+		int result = articleService.addImages(article);
+		
+		if (result >0 ) {
+			return JsonMsg.success();
+		}else {
+			return JsonMsg.error();
+		}
+	}
 	
+	/**
+	 * 
+	 * @Title: favoriteArticle 
+	 * @Description: 收藏文章
+	 * @param id
+	 * @param session
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月22日下午3:30:48
+	 */
+	@ResponseBody
+	@PostMapping("/favoriteArticle")
+	public JsonMsg favoriteArticle(int id,HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		Article articleIsNull = articleService.articleIsNull(id);
+		CmsAssert.AssertTrue(articleIsNull != null, "该文章不存在");
+		int result = articleService.favoriteArticle(user.getId(),id);
+		if (result > 0) {
+			return JsonMsg.success();
+		}else {
+			return JsonMsg.error().addInfo("error", "收藏失败");
+		}
+	}
 	
+	/**
+	 * 
+	 * @Title: myFavorite 
+	 * @Description: 获取到我的收藏
+	 * @param session
+	 * @param page
+	 * @param m
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月22日下午7:08:29
+	 */
+	@GetMapping("/myFavorite")
+	public String myFavorite(HttpSession session,
+							@RequestParam(defaultValue = "1")int page,Model m) {
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		CmsAssert.AssertTrueHtml(user != null, "请去登入");
+		PageInfo<Article> info = articleService.getmyFavorite(user.getId(),page);
+		m.addAttribute("info", info);
+		return "user/myFavorite";
+	}
+	
+	@ResponseBody
+	@PostMapping("/deleteFavorite")
+	public JsonMsg deleteFavorite(HttpSession session,int id) {
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		int result = articleService.deleteFavorite(user.getId(),id);
+		if (result > 0) {
+			return JsonMsg.success();
+		}else {
+			return JsonMsg.error().addInfo("error", "取消收藏失败");
+		}
+	}
 }
