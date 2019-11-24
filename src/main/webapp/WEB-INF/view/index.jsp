@@ -182,6 +182,17 @@
 		
 	</div>
 	<nav class="navbar navbar-fixed-bottom" role="navigation">
+	
+	<div class="container-fluid" style="text-align:center">
+	 	<div class="row" style="margin-top:13px">
+	 	    <div class="col-md-1"><a href="sohu.com" class="fl"></a></div>
+	 			<c:forEach items="${links}" var ="link">
+	 				<div class="col-md-1"><a href="${link.url}" class="fl"> ${link.name}</a></div>
+	 			</c:forEach>
+	 		<div class="col-md-1"><a href="sohu.com" class="fl"></a></div>
+	 	</div>
+	 </div>
+	
 		<div align="center">
 			  <footer class="footer">
 	              © 2019 GigData - 1707D <i class="mdi mdi-heart text-danger"></i> ZSW.

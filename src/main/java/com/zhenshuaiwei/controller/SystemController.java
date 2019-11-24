@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.entity.Article;
 import com.zhenshuaiwei.entity.Channel;
+import com.zhenshuaiwei.entity.Link;
 import com.zhenshuaiwei.service.ArticleService;
 import com.zhenshuaiwei.service.ChannelService;
+import com.zhenshuaiwei.service.LinkService;
 
 /** 
  * @ClassName: SystemController 
@@ -41,6 +43,10 @@ public class SystemController {
 	private ChannelService channelService;
 	@Autowired
 	private ArticleService articleService;
+	
+	@Autowired
+	private LinkService linkService;
+	
 	
 	/**
 	 * 
@@ -72,9 +78,12 @@ public class SystemController {
 		List<Article> newArticleList = articleService.getNewArticleList(5);
 //		 * 获取热门的文章
 		PageInfo<Article> hotArticleList = articleService.getHotArticleList(page);
+//		后去友情lianjie
+		PageInfo<Link> links = linkService.getLinks(1);
 		m.addAttribute("channelList", channelList);
 		m.addAttribute("newArticleList", newArticleList);
 		m.addAttribute("info", hotArticleList);
+		m.addAttribute("links", links.getList());
 		return "/index";
 	}
 

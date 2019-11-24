@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	    <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -120,7 +121,18 @@
 
 			<!-- 中间员工表格信息展示内容 -->
 			<div class="col-sm-10 " id="context" >
-			
+				
+				<div class="">
+					<form:form modelAttribute="link" id="linkForm" type="post" action="/link/addLink">
+						链接地址<form:input path="url" /><form:errors path="url"/>
+						<br>
+						链接名称<form:input path="name" /><form:errors path="name"/>
+						<br>
+						<form:button>添加</form:button>
+			<!-- 			<button type="button" onclick="addLink()" class="btn btn-success">添加链接</button> -->
+					</form:form>
+				</div>
+				
 			</div>
 			<!-- /.hrms_body -->
 
@@ -138,9 +150,7 @@
 	</div>
 	<!-- js -->
 	<script type="text/javascript">
-		$(function() {
-			showContext("/article/articleList","ckwz");
-		})
+	
 		
 		function showContext(url,liId) {
 			$("#"+liId).addClass("list-group-item-success");
