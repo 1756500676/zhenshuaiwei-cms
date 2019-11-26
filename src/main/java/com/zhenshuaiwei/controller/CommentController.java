@@ -28,6 +28,7 @@ import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.Article;
 import com.zhenshuaiwei.entity.Comment;
+import com.zhenshuaiwei.entity.Reply;
 import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.ArticleService;
 import com.zhenshuaiwei.service.CommentService;
@@ -93,6 +94,17 @@ public class CommentController {
 		else return JsonMsg.error();
 	}
 	
+	/**
+	 * 
+	 * @Title: myComment 
+	 * @Description: 回去我的评论
+	 * @param m
+	 * @param session
+	 * @param page
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月26日上午8:58:39
+	 */
 	@GetMapping("/myComment")
 	public String myComment(Model m,HttpSession session,
 							@RequestParam(defaultValue = "1")int page) {
@@ -103,5 +115,16 @@ public class CommentController {
 		}
 		return "user/myComment";
 	}
+	
+	@ResponseBody
+	@PostMapping("/pushReply")
+	public JsonMsg pushReply(HttpSession session,Reply reply) {
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		reply.setFromUserId(user.getId());
+		commentService.pushReply(reply);
+		return JsonMsg.success();
+	}
+	
+	
 
 }

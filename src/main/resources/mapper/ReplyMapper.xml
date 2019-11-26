@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.zhenshuaiwei.dao.ReplyMapper">
+  
+  	<insert id="pushReply">
+  		insert into cms_reply set 
+  								comment_id=#{commentId},
+  								reply_id=#{replyId},
+  								content=#{content},
+  								from_userid=#{fromUserId},
+  								to_userid=#{toUserId},
+  								created=now()
+  	</insert>
+  
+  </mapper>

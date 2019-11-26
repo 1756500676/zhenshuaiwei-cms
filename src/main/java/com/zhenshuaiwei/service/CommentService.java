@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.entity.Comment;
+import com.zhenshuaiwei.entity.Reply;
 
 /** 
  * @ClassName: CommentService 
@@ -58,5 +59,14 @@ public interface CommentService {
 	 * @date: 2019年11月21日下午4:08:12
 	 */
 	PageInfo<Comment> getMyComment(int page,Integer id);
+
+	/** 
+	 * @Title: pushReply 
+	 * @Description: TODO
+	 * @param reply
+	 * @return: void
+	 * @date: 2019年11月26日上午9:10:55
+	 */
+	void pushReply(Reply reply);
 
 }

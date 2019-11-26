@@ -39,4 +39,13 @@ public interface LinkService {
 	 */
 	PageInfo<Link> getLinks(int page);
 
+	/** 
+	 * @Title: deleteLink 
+	 * @Description: 删除友情链接
+	 * @param id
+	 * @return: void
+	 * @date: 2019年11月25日下午8:19:05
+	 */
+	int deleteLink(int id);
+
 }

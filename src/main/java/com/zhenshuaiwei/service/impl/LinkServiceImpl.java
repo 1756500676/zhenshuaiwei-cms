@@ -44,6 +44,11 @@ public class LinkServiceImpl implements LinkService {
 		List<Link> list = linkMapper.getLinks();
 		return new PageInfo<Link>(list);
 	}
+
+	@Override
+	public int deleteLink(int id) {
+		return linkMapper.deleteLink(id);
+	}
 	
 	
 }

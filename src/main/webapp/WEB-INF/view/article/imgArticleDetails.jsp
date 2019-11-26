@@ -72,30 +72,43 @@
 		<span class="pull-right">${article.hits }次阅读&nbsp;&nbsp;评论数量:${article.commentCnt }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br><br>
 		<div>
 			<!-- 	显示文章的评论 -->
-			<c:forEach items="${commentList }" var="comment" varStatus="index">
+			<c:forEach items="${info.list }" var="comment" varStatus="index">
 				<!-- 文章的评论 -->
 				<div>
-					<!-- 发表文章的用户 -->
-					<div>
-						<img alt="" height="30px" width="30px" class="img-circle" src="/pic/${comment.user.url }" onerror="this.src='/static/images/default_user_url.png'">
-						<b>${comment.user.username }</b>
-							&nbsp;&nbsp;
-							${comment.dateDesc }
-							<%-- <fmt:formatDate value="${comment.created }" pattern="YYYY年MM月dd日 HH:mm:ss" /> --%>
-							<span class=" pull-right">
-								<i class="fa fa-thumbs-o-up" onclick="likeComment(${comment.id})"></i>&nbsp;
-								${comment.likeNum == 0 ? '' : comment.likeNum }	
-							</span>
-					</div>
-					<!-- 发表的内容 -->
-					<div>
-						<br>
-						${comment.content }
-					</div>
+					<c:if test="${index.count <= 3 || sessionScope.user != null }">
+						<!-- 发表文章的用户 -->
+						<div>
+							<img alt="" height="30px" width="30px" class="img-circle" src="/pic/${comment.user.url }" onerror="this.src='/static/images/default_user_url.png'">
+							<b>${comment.user.username }</b>
+								&nbsp;&nbsp;
+								${comment.dateDesc }
+								<%-- <fmt:formatDate value="${comment.created }" pattern="YYYY年MM月dd日 HH:mm:ss" /> --%>
+								<span class=" pull-right">
+									<i class="fa fa-thumbs-o-up" onclick="likeComment(${comment.id})"></i>&nbsp;
+									${comment.likeNum == 0 ? '' : comment.likeNum }	
+								</span>
+						</div>
+						<!-- 发表的内容 -->
+						<div>
+							<br>
+							${comment.content }
+						</div>
+						<hr>
+					</c:if>
+					<c:if test="${index.count == 3 && sessionScope.user == null }">
+						<div class="text-center">
+							<a  onclick="location ='/login?scrollTo=true&gotoArticle=${article.id}'" >登入查看${info.total }条热评</a>
+						</div>
+					</c:if> 
 				</div>
-				<hr>
 			</c:forEach>
 		</div>
+		<!-- 评论分页 -->
+		<c:if test="${sessionScope.user != null }">
+			<div>
+				  <%@include file="../common/page.jsp" %>
+			</div>
+		</c:if>
 		<!-- 文章的上一篇下一篇 -->	
 		<div>
 			<nav aria-label="...">

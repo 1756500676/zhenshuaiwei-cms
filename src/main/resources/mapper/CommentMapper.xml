@@ -15,12 +15,11 @@
 					articleId,
 					userId,
 					content,
-					likeNum,
 					created,
 					created as dateDesc
 			FROM cms_comment 
 			WHERE articleId=${value}	
-			ORDER BY likeNum desc,created DESC
+			ORDER BY created DESC
   		</select>
   		<!-- 发布评论 -->
   		<insert id="pushComment">
@@ -37,7 +36,6 @@
 					articleId,
 					userId,
 					content,
-					likeNum,
 					created,
 					created as dateDesc
   			from cms_comment 

@@ -25,7 +25,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">CMS文章管理系统</a>
+					<a class="navbar-brand" href="/">CMS文章管理系统</a>
 				</div>
 
 				<!-- 导航条 -->

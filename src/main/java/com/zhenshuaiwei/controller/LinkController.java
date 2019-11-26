@@ -10,6 +10,7 @@
  */
 package com.zhenshuaiwei.controller;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
+import com.zhenshuaiwei.common.CmsAssert;
+import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.common.JsonMsg;
 import com.zhenshuaiwei.entity.Link;
+import com.zhenshuaiwei.entity.User;
 import com.zhenshuaiwei.service.LinkService;
 
 /** 
@@ -77,13 +81,44 @@ public class LinkController {
 		return "system/index";
 	}
 	
+	/**
+	 * 
+	 * @Title: linkList 
+	 * @Description: 获取友情链接的集合
+	 * @param m
+	 * @param page
+	 * @return
+	 * @return: String
+	 * @date: 2019年11月25日下午8:16:17
+	 */
 	@GetMapping("/linkList")
 	public String linkList(Model m,@RequestParam(defaultValue = "1")int page) {
 		PageInfo<Link> info = linkService.getLinks(page);
 		m.addAttribute("info", info);
 		return "system/links";
 	}
-	
-	
+
+	/**
+	 * 
+	 * @Title: deleteLink 
+	 * @Description: 删除友情链接
+	 * @param session
+	 * @param id
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月25日下午8:21:24
+	 */
+	@ResponseBody
+	@PostMapping("/deleteLink")
+	public JsonMsg deleteLink(HttpSession session,int id) {
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		CmsAssert.AssertTrue(user.getRole() == ConstantClass.USER_ROLE_ADMIN, "只有管理员可删除");
+		int result = linkService.deleteLink(id);
+		if (result > 0) {
+			return JsonMsg.success();
+		}else {
+			return JsonMsg.error();
+		}
+	}
 
 }

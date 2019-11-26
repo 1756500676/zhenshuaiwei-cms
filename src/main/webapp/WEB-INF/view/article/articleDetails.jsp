@@ -31,10 +31,10 @@
 		
 		<!-- 写评论 -->
 		<div>
-			<form action="">
+			<form action="" id="commentForm">
 				<input type="hidden" name="articleId" value="${article.id }">
 				<div>
-					<img alt="" class="pull-left" height="30px" width="30px" class="img-circle" src="/pic/${comment.user.url }" onerror="this.src='/static/images/default_user_url.png'">
+					<img alt="" class="pull-left" height="30px" width="30px" class="img-circle" src="/pic/${sessionScope.user.url }" onerror="this.src='/static/images/default_user_url.png'">
 					<textarea rows="5"  cols="155" id="content" name="content" placeholder="相对作者说点什么"></textarea>
 				</div>
 				<div class="pull-right">
@@ -58,7 +58,6 @@
 							<b>${comment.user.username }</b>
 								&nbsp;&nbsp;
 								${comment.dateDesc }
-								<%-- <fmt:formatDate value="${comment.created }" pattern="YYYY年MM月dd日 HH:mm:ss" /> --%>
 								<span class=" pull-right">
 									<i class="fa fa-thumbs-o-up" onclick="likeComment(${comment.id})"></i>&nbsp;
 									${comment.likeNum == 0 ? '' : comment.likeNum }	
@@ -68,6 +67,26 @@
 						<div>
 							<br>
 							${comment.content }
+							<div class="pull-right">
+								<a onclick="showRelpyDiv(this)">回复</a>&nbsp;&nbsp;&nbsp;
+								<a>举报</a>
+							</div>
+							
+								<!-- 评论的恢复  -->
+								<div style="display: none" id="replyDiv">
+									<form action="" id="replyForm">
+									<input type="hidden" name="commentId" value="${comment.id }">
+									<input type="hidden" name="toUserId" value="${comment.user.id }">
+										<div>
+											<img alt="" class="pull-left" height="30px" width="30px" class="img-circle" src="/pic/${sessionScope.user.url }" onerror="this.src='/static/images/default_user_url.png'">
+											<textarea rows="5"  cols="155" id="content" name="content" placeholder="相对作者说点什么"></textarea>
+										</div>
+										<div class="pull-right">
+											<button type="button" onclick="pushReply(this)" class="btn btn-danger">发表回复</button>
+										</div>
+									</form>
+								</div>
+								
 						</div>
 						<hr>
 					</c:if>
@@ -95,7 +114,8 @@
 			</nav>
 		</div>
 	</div>
-
+	
+		
 
 	
 	<script type="text/javascript">
@@ -116,7 +136,7 @@
 			$.ajax({
 				url:"/comment/pushComment",
 				type:"post",
-				data:$("form").serialize(),
+				data:$("#commentForm").serialize(),
 				dataType:"json",
 				success:function(data){
 					if (data.status == 100) {
@@ -188,6 +208,36 @@
 		//分分页之后到底部
 		if ("${scrollTo}" == "true") {
 			 window.scrollTo(0, document.body.scrollHeight)
+		}
+
+		//打开评论的恢复
+		function showRelpyDiv(thiz) {
+			$(thiz).parent().next().show();
+		}
+		
+		function pushReply(thiz) {
+			var formData = $(thiz).parent().parent().serialize();
+			alert(formData);
+			$.ajax({
+				url:"/comment/pushReply",
+				type:"post",
+				data:formData,
+				dataType:"json",
+				success:function(data){
+					if (data.status == 100) {
+						alert("回复成功");
+						location.reload(true);
+					}else{
+						alert(data.info.error);
+					}			
+				},error:function(XMLHttpRequest, textStatus){
+					var redirect=XMLHttpRequest.getResponseHeader("REDIRECT");
+		            if(redirect=="REDIRECT"){
+		                alert("请先登录！");
+		               window.open(XMLHttpRequest.getResponseHeader("CONTEXTPATH"));
+		            }
+				}
+			});
 		}
 	</script>
 	

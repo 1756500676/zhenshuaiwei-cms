@@ -50,16 +50,19 @@
 								<a href="#" class="thumbnail">
 									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/index1.jpg" alt="Second slide">
 								</a>
+								<div class="carousel-caption">我爱中国共产党</div>
 							</div>
 							<div class="item " style="widows: 800px;height: 300px">
 								<a href="#" class="thumbnail">
 									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/IMG_0832.JPG" alt="First slide">
 								</a>
+								<div class="carousel-caption">也爱你</div>
 							</div>
 							<div class="item" style="widows: 800px;height: 300px"> 
 								<a href="#" class="thumbnail">
 									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/index2.jpg" alt="Second slide">
 								</a>
+								<div class="carousel-caption">党在我心中</div>
 							</div>
 						</div>
 						<!-- 轮播（Carousel）导航 -->

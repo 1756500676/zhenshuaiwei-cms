@@ -19,7 +19,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.dao.ArticleMapper;
 import com.zhenshuaiwei.dao.CommentMapper;
+import com.zhenshuaiwei.dao.ReplyMapper;
 import com.zhenshuaiwei.entity.Comment;
+import com.zhenshuaiwei.entity.Reply;
 import com.zhenshuaiwei.service.CommentService;
 
 /** 
@@ -36,6 +38,9 @@ public class CommentServiceImpl implements CommentService{
 
 	@Autowired
 	private ArticleMapper articleMapper;
+	
+	@Autowired
+	private ReplyMapper replyMapper;
 	
 	@Override
 	public PageInfo<Comment> getArticleCommentById(Integer articleId,int pageNum) {
@@ -61,6 +66,11 @@ public class CommentServiceImpl implements CommentService{
 		PageHelper.startPage(page, 10);
 		List<Comment> list = mapper.getMyComment(id);
 		return new PageInfo<Comment>(list);
+	}
+
+	@Override
+	public void pushReply(Reply reply) {
+		replyMapper.pushReply(reply);
 	}
 	
 }

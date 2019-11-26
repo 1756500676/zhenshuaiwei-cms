@@ -12,6 +12,7 @@ package com.zhenshuaiwei.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
@@ -44,5 +45,16 @@ public interface LinkMappper {
 	 */
 	@Select("select id,url,name,created from cms_link order by created desc")
 	List<Link> getLinks();
+
+	/** 
+	 * @Title: deleteLink 
+	 * @Description: TODO
+	 * @param id
+	 * @return
+	 * @return: int
+	 * @date: 2019年11月25日下午8:19:46
+	 */
+	@Delete("delete from cms_link where id = #{id}")
+	int deleteLink(int id);
 
 }
