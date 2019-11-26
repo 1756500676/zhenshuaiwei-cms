@@ -12,6 +12,7 @@ package com.zhenshuaiwei.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 /** 
  * @ClassName: Comment 
@@ -26,72 +27,93 @@ public class Comment implements Serializable{
 	 * @fieldType: long
 	 * @Description: TODO
 	 */
-	private static final long serialVersionUID = -4487055255870683228L;
+	private static final long serialVersionUID = 3901393848859414124L;
 	private Integer id;
 	private int articleId;
 	private Article article;
 	private int userId;
 	private User user;
 	private String content;
-	private int likeNum;
 	private Date created;
+	//显示该评论的时间
 	private String dateDesc;
+	
+	private List<Reply> replys;
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public int getArticleId() {
 		return articleId;
 	}
+
 	public void setArticleId(int articleId) {
 		this.articleId = articleId;
 	}
+
 	public Article getArticle() {
 		return article;
 	}
+
 	public void setArticle(Article article) {
 		this.article = article;
 	}
+
 	public int getUserId() {
 		return userId;
 	}
+
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getLikeNum() {
-		return likeNum;
-	}
-	public void setLikeNum(int likeNum) {
-		this.likeNum = likeNum;
-	}
+
 	public Date getCreated() {
 		return created;
 	}
+
 	public void setCreated(Date created) {
 		this.created = created;
 	}
+
 	public String getDateDesc() {
 		return dateDesc;
 	}
+
 	public void setDateDesc(String dateDesc) {
 		this.dateDesc = dateDesc;
 	}
-	public Comment(Integer id, int articleId, Article article, int userId, User user, String content, int likeNum,
-			Date created, String dateDesc) {
+
+	public List<Reply> getReplys() {
+		return replys;
+	}
+
+	public void setReplys(List<Reply> replys) {
+		this.replys = replys;
+	}
+
+	public Comment(Integer id, int articleId, Article article, int userId, User user, String content, Date created,
+			String dateDesc, List<Reply> replys) {
 		super();
 		this.id = id;
 		this.articleId = articleId;
@@ -99,20 +121,23 @@ public class Comment implements Serializable{
 		this.userId = userId;
 		this.user = user;
 		this.content = content;
-		this.likeNum = likeNum;
 		this.created = created;
 		this.dateDesc = dateDesc;
+		this.replys = replys;
 	}
+
 	public Comment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", articleId=" + articleId + ", article=" + article + ", userId=" + userId
-				+ ", user=" + user + ", content=" + content + ", likeNum=" + likeNum + ", created=" + created
-				+ ", dateDesc=" + dateDesc + "]";
+				+ ", user=" + user + ", content=" + content + ", created=" + created + ", dateDesc=" + dateDesc
+				+ ", replys=" + replys + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -122,6 +147,7 @@ public class Comment implements Serializable{
 		result = prime * result + userId;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -142,6 +168,9 @@ public class Comment implements Serializable{
 			return false;
 		return true;
 	}
+	
+
+	
 	
 	
 	

@@ -46,6 +46,16 @@ public class Reply implements Serializable {
 	private User toUser;
 	
 	private Date created;
+	private String descDate;
+
+	
+	public String getDescDate() {
+		return descDate;
+	}
+
+	public void setDescDate(String descDate) {
+		this.descDate = descDate;
+	}
 
 	public Integer getId() {
 		return id;

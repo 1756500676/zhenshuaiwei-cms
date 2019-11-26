@@ -60,19 +60,37 @@
 								${comment.dateDesc }
 								<span class=" pull-right">
 									<i class="fa fa-thumbs-o-up" onclick="likeComment(${comment.id})"></i>&nbsp;
-									${comment.likeNum == 0 ? '' : comment.likeNum }	
 								</span>
 						</div>
 						<!-- 发表的内容 -->
 						<div>
 							<br>
 							${comment.content }
+							<!-- 评论的恢复 -->
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-11">
+									<c:forEach items="${comment.replys }" var="reply">
+										<div>
+											<b>${reply.fromUser.username }</b>&gt;<b>${reply.toUser.username }</b>
+												&nbsp;&nbsp;
+												${reply.descDate }
+										</div>
+										<div>
+											<br>
+											${reply.content }
+										</div>
+										<br>
+									</c:forEach>
+								</div>
+							</div>
+							
 							<div class="pull-right">
 								<a onclick="showRelpyDiv(this)">回复</a>&nbsp;&nbsp;&nbsp;
 								<a>举报</a>
 							</div>
 							
-								<!-- 评论的恢复  -->
+								<!-- 回复评论  -->
 								<div style="display: none" id="replyDiv">
 									<form action="" id="replyForm">
 									<input type="hidden" name="commentId" value="${comment.id }">
@@ -217,7 +235,6 @@
 		
 		function pushReply(thiz) {
 			var formData = $(thiz).parent().parent().serialize();
-			alert(formData);
 			$.ajax({
 				url:"/comment/pushReply",
 				type:"post",

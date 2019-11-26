@@ -10,6 +10,9 @@
  */
 package com.zhenshuaiwei.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import com.zhenshuaiwei.dao.ReplyMapper;
 import com.zhenshuaiwei.entity.Comment;
 import com.zhenshuaiwei.entity.Reply;
 import com.zhenshuaiwei.service.CommentService;
+import com.zhenshuaiwei.utils.DateDesc;
 
 /** 
  * @ClassName: CommentServiceImpl 
@@ -43,9 +47,21 @@ public class CommentServiceImpl implements CommentService{
 	private ReplyMapper replyMapper;
 	
 	@Override
-	public PageInfo<Comment> getArticleCommentById(Integer articleId,int pageNum) {
+	public PageInfo<Comment> getArticleCommentById(Integer articleId,int pageNum) throws Exception {
 		PageHelper.startPage(pageNum, 5);
 		List<Comment> list = mapper.getArticleCommentById(articleId);
+		for (Comment comment : list) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
+			Date date = format.parse(comment.getDateDesc());
+			comment.setDateDesc(DateDesc.format(date));
+			System.out.println(comment);
+		}
+		for (Comment comment : list) {
+			for (Reply repl : comment.getReplys()) {
+				String descDate = DateDesc.format(repl.getCreated());
+				repl.setDescDate(descDate);
+			}
+		}
 		return new PageInfo<Comment>(list);
 	}
 

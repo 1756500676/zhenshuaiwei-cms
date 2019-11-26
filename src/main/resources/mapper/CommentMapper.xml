@@ -7,6 +7,7 @@
   			<id column="id" property="id" />
   			<association property="article" column="articleId" select="com.zhenshuaiwei.dao.ArticleMapper.articleIsNull"></association>
   			<association property="user" column="userId" select="com.zhenshuaiwei.dao.UserMapper.getUserById"></association>
+  			<collection property="replys" column="id" select="com.zhenshuaiwei.dao.ReplyMapper.getCommentReplys"></collection>
   		</resultMap>
 
  		<!-- 查询文章的评论 --> 

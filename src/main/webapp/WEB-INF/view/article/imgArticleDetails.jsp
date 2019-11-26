@@ -70,7 +70,7 @@
 		<hr>
 		<!-- 文章评论 -->
 		<span class="pull-right">${article.hits }次阅读&nbsp;&nbsp;评论数量:${article.commentCnt }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br><br>
-		<div>
+			<div>
 			<!-- 	显示文章的评论 -->
 			<c:forEach items="${info.list }" var="comment" varStatus="index">
 				<!-- 文章的评论 -->
@@ -82,16 +82,53 @@
 							<b>${comment.user.username }</b>
 								&nbsp;&nbsp;
 								${comment.dateDesc }
-								<%-- <fmt:formatDate value="${comment.created }" pattern="YYYY年MM月dd日 HH:mm:ss" /> --%>
 								<span class=" pull-right">
 									<i class="fa fa-thumbs-o-up" onclick="likeComment(${comment.id})"></i>&nbsp;
-									${comment.likeNum == 0 ? '' : comment.likeNum }	
 								</span>
 						</div>
 						<!-- 发表的内容 -->
 						<div>
 							<br>
 							${comment.content }
+							<!-- 评论的恢复 -->
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-11">
+									<c:forEach items="${comment.replys }" var="reply">
+										<div>
+											<b>${reply.fromUser.username }</b>&gt;<b>${reply.toUser.username }</b>
+												&nbsp;&nbsp;
+												${reply.descDate }
+										</div>
+										<div>
+											<br>
+											${reply.content }
+										</div>
+										<br>
+									</c:forEach>
+								</div>
+							</div>
+							
+							<div class="pull-right">
+								<a onclick="showRelpyDiv(this)">回复</a>&nbsp;&nbsp;&nbsp;
+								<a>举报</a>
+							</div>
+							
+								<!-- 回复评论  -->
+								<div style="display: none" id="replyDiv">
+									<form action="" id="replyForm">
+									<input type="hidden" name="commentId" value="${comment.id }">
+									<input type="hidden" name="toUserId" value="${comment.user.id }">
+										<div>
+											<img alt="" class="pull-left" height="30px" width="30px" class="img-circle" src="/pic/${sessionScope.user.url }" onerror="this.src='/static/images/default_user_url.png'">
+											<textarea rows="5"  cols="155" id="content" name="content" placeholder="相对作者说点什么"></textarea>
+										</div>
+										<div class="pull-right">
+											<button type="button" onclick="pushReply(this)" class="btn btn-danger">发表回复</button>
+										</div>
+									</form>
+								</div>
+								
 						</div>
 						<hr>
 					</c:if>
@@ -198,6 +235,35 @@
 				success:function(data){
 					if (data.status == 100) {
 						alert("收藏成功");
+						location.reload(true);
+					}else{
+						alert(data.info.error);
+					}			
+				},error:function(XMLHttpRequest, textStatus){
+					var redirect=XMLHttpRequest.getResponseHeader("REDIRECT");
+		            if(redirect=="REDIRECT"){
+		                alert("请先登录！");
+		               window.open(XMLHttpRequest.getResponseHeader("CONTEXTPATH"));
+		            }
+				}
+			});
+		}
+		
+		//打开评论的恢复
+		function showRelpyDiv(thiz) {
+			$(thiz).parent().next().show();
+		}
+		
+		function pushReply(thiz) {
+			var formData = $(thiz).parent().parent().serialize();
+			$.ajax({
+				url:"/comment/pushReply",
+				type:"post",
+				data:formData,
+				dataType:"json",
+				success:function(data){
+					if (data.status == 100) {
+						alert("回复成功");
 						location.reload(true);
 					}else{
 						alert(data.info.error);

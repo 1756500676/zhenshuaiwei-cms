@@ -29,9 +29,10 @@ public interface CommentService {
 	 * @Description: 获取文章的评论
 	 * @param articleId
 	 * @return: void
+	 * @throws Exception 
 	 * @date: 2019年11月21日上午9:54:36
 	 */
-	PageInfo<Comment> getArticleCommentById(Integer articleId,int pageNum);
+	PageInfo<Comment> getArticleCommentById(Integer articleId,int pageNum) throws Exception;
 
 	/** 
 	 * @Title: pushComment 

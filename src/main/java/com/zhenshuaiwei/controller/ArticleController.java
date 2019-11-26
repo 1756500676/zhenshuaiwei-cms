@@ -143,14 +143,10 @@ public class ArticleController {
 		Article article = articleService.getArticleById(articleId);
 //		文章评论
 		PageInfo<Comment> info = commentService.getArticleCommentById(articleId,pageNum);
-		List<Comment> commentList = info.getList();
 		m.addAttribute("info", info);
-		for (Comment comment : commentList) {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
-			Date date = format.parse(comment.getDateDesc());
-			comment.setDateDesc(DateDesc.format(date));
-			System.out.println(comment);
-		}
+		
+		
+		
 		m.addAttribute("protal", protal);
 		if (article.getArticleType() == ArticleType.HTML) {
 			m.addAttribute("article", article);

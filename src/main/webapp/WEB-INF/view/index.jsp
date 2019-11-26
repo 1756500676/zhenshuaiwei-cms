@@ -23,7 +23,7 @@
 			<!-- 左侧菜单 -->
 			<div class="col-md-2" style="minheight:200px;margin-top:20px" >
 					<div class="list-group">
-						 <a href="/system/index" class="list-group-item active">热门文章</a>
+						 <a href="/index" class="list-group-item active">热门文章</a>
 						<c:forEach items="${channelList }" var="channel">
 							<a href="/article/getArticleByCG?chId=${channel.id }" class="list-group-item ${chId == channel.id ? 'active' : '' }">${channel.name }</a>
 <%-- 						    <li class="list-group-item" data="article/getArticleByChannelId?channelId=${channel.id }"></li> --%>

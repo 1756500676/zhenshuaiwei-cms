@@ -52,6 +52,7 @@
         <form action="" id="regForm">
 	        <div class="cont_form_sign_up"> <a href="#" onClick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
 	          <h2>SIGN UP</h2>
+	          <input type="text" name="username" id="username"  placeholder="username" />
 	          <input type="password" name="password" id="password"  placeholder="password" />
 	          <input type="password" name="password2" id="password2"  placeholder="Confirm Password" />
 	          <button type="submit" class="btn_sign_up">SIGN UP</button>
