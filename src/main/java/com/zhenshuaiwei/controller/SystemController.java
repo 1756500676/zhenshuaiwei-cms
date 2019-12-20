@@ -14,12 +14,18 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.zhenshuaiwei.common.ESHLUtil;
+import com.zhenshuaiwei.common.HLUtils;
+import com.zhenshuaiwei.dao.ArticleRepository;
 import com.zhenshuaiwei.entity.Article;
 import com.zhenshuaiwei.entity.Channel;
 import com.zhenshuaiwei.entity.Link;
@@ -46,6 +52,11 @@ public class SystemController {
 	
 	@Autowired
 	private LinkService linkService;
+	
+	@Autowired
+	private ArticleRepository articleRepository;
+	@Autowired
+	private ElasticsearchTemplate elasticsearchTemplate;
 	
 	
 	/**
@@ -85,6 +96,16 @@ public class SystemController {
 		m.addAttribute("info", hotArticleList);
 		m.addAttribute("links", links.getList());
 		return "/index";
+	}
+	
+	@GetMapping("/search")
+	public String search(Model m,
+						String searchV,
+						@RequestParam(defaultValue = "1")int page) {
+		PageInfo<Article> info = ESHLUtil.selectPageObjects(Article.class, page, 5, "id", new String[] {"title"}, searchV).getPageInfo();
+		m.addAttribute("info", info);
+		m.addAttribute("searchV", searchV);
+		return "/searchIndex";
 	}
 
 	@GetMapping("/error")

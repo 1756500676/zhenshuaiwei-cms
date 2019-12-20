@@ -34,7 +34,7 @@ public interface LinkMappper {
 	 * @return: int
 	 * @date: 2019年11月23日下午6:52:53
 	 */
-	@Insert("insert into cms_link set url=#{url},name=#{name},created=now()")
+	@Insert("insert into cms_favorite set url=#{url},text=#{text},created=now(),user_id=#{userId}")
 	int addLink(Link link);
 
 	/** 
@@ -43,7 +43,7 @@ public interface LinkMappper {
 	 * @return: void
 	 * @date: 2019年11月23日下午7:11:50
 	 */
-	@Select("select id,url,name,created from cms_link order by created desc")
+	@Select("select id,url,text,created,user_id from cms_favorite order by created desc")
 	List<Link> getLinks();
 
 	/** 
@@ -54,7 +54,18 @@ public interface LinkMappper {
 	 * @return: int
 	 * @date: 2019年11月25日下午8:19:46
 	 */
-	@Delete("delete from cms_link where id = #{id}")
+	@Delete("delete from cms_favorite where id = #{id}")
 	int deleteLink(int id);
+
+	/** 
+	 * @Title: getmyFavorite 
+	 * @Description: TODO
+	 * @param id
+	 * @return
+	 * @return: List<Link>
+	 * @date: 2019年11月27日上午9:10:11
+	 */
+	@Select("select id,url,text,created,user_id from cms_favorite where user_id=${value} order by created desc")
+	List<Link> getmyFavorite(Integer id);
 
 }

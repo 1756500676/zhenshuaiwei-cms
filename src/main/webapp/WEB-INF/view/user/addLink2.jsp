@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	pageEncoding="UTF-8"%>
+	    <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="<%=request.getContextPath() %>/static/bootstrap/css/bootstrap.css" rel="stylesheet">
 <link href="<%=request.getContextPath() %>/static/css/jquery/icons.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<%=request.getContextPath() %>/static/js/jquery-3.2.1.js"></script>
@@ -71,7 +72,16 @@
 
 			<!-- 中间员工表格信息展示内容 -->
 			<div class="col-sm-10 " id="context" >
-			
+				<div class="">
+						<form:form modelAttribute="link" id="linkForm" type="post" action="/link/addUserLink">
+							链接地址<form:input path="url" /><form:errors path="url"/>
+							<br>
+							链接名称<form:input path="text" /><form:errors path="text"/>
+							<br>
+							<form:button>添加</form:button>
+				<!-- 			<button type="button" onclick="addLink()" class="btn btn-success">添加链接</button> -->
+						</form:form>
+					</div>
 				<div id="kindEditor" style="display: none">
 				   <!-- 引入kindEditor的样式 -->
 				  <jsp:include page="/static/kindeditor/jsp/demo.jsp"></jsp:include>

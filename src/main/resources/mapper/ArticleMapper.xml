@@ -150,7 +150,7 @@
 			And id =${value}
 	 	</select>
 	 	
-	 	<insert id="addArticle">
+	 	<insert id="addArticle" keyProperty="id" useGeneratedKeys="true">
 	 		insert into cms_article set
 									title=#{title},
 									content=#{content},
@@ -215,6 +215,27 @@
 			join cms_favorite f on a.id=f.articleId
 			where deleted = 0 
 			And f.userId =${value}
+	 	</select>
+	 	<select id="getAddToESArticles" resultMap="ArticleMap">
+		 	SELECT 
+		 				id,
+					title,
+					content,
+					picture,
+					channel_id,
+					category_id,
+					user_id,
+					hits,
+					hot,
+					status,
+					deleted,
+					created,
+					updated,
+					commentCnt,
+					articleType
+				FROM cms_article
+				WHERE deleted = 0
+				And status = 1
 	 	</select>
 	 	
   </mapper>

@@ -37,6 +37,7 @@
 								<a href="#" class="thumbnail">
 									<img style="widows: 800px;height: 300px" src="/pic/${image.url }" alt="Second slide">
 								</a>
+								<div class="carousel-caption">${image.desc }</div>
 							</div>
 						</c:forEach>
 								</div>

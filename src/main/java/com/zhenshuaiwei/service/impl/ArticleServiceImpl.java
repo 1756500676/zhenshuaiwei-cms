@@ -13,6 +13,7 @@ package com.zhenshuaiwei.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -28,11 +29,14 @@ import com.zhenshuaiwei.service.ArticleService;
  * @author:zsw 
  * @date: 2019年11月14日 下午1:44:49  
  */
+@SuppressWarnings({"unused","rawtypes","unchecked"})
 @Service
 public class ArticleServiceImpl implements ArticleService {
 	@Autowired
 	private ArticleMapper mapper;
 	
+	@Autowired
+	private RedisTemplate redisTemplate;
 
 	@Override
 	public List<Article> getNewArticleList(int count) {
@@ -45,7 +49,16 @@ public class ArticleServiceImpl implements ArticleService {
 		if (page != 0) {
 			PageHelper.startPage(page, 3);
 		}
-		return new PageInfo<Article>(mapper.getHotArticleList());
+		List<Article> list = redisTemplate.opsForList().range("hotList", 0, -1);
+		if (list != null && list.size() != 0) {
+			System.out.println("===========================================Redis查询");
+			list.forEach(System.out::println);
+			return new PageInfo<Article>(list);
+		}
+		List<Article> hotArticleList = mapper.getHotArticleList();
+		redisTemplate.opsForList().rightPushAll("hotList", hotArticleList.toArray());
+		System.out.println("===========================================Mysql查询");
+		return new PageInfo<Article>(hotArticleList);
 	}
 
 	@Override
@@ -137,6 +150,11 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public int deleteFavorite(Integer id, int articleId) {
 		return mapper.deleteFavorite(id,articleId);
+	}
+
+	@Override
+	public List<Article> getAddToESArticles() {
+		return mapper.getAddToESArticles();
 	}
 
 }

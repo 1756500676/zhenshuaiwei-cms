@@ -126,13 +126,12 @@
 					<form:form modelAttribute="link" id="linkForm" type="post" action="/link/addLink">
 						链接地址<form:input path="url" /><form:errors path="url"/>
 						<br>
-						链接名称<form:input path="name" /><form:errors path="name"/>
+						链接名称<form:input path="text" /><form:errors path="text"/>
 						<br>
 						<form:button>添加</form:button>
 			<!-- 			<button type="button" onclick="addLink()" class="btn btn-success">添加链接</button> -->
 					</form:form>
 				</div>
-				
 			</div>
 			<!-- /.hrms_body -->
 

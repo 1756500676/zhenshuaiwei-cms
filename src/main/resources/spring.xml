@@ -23,7 +23,14 @@
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-
+	<!-- 加载redis配置 -->
+	<import resource="classpath:redis.xml"/>
+	<!-- 加载kafkaConsumer配置 -->
+	<import resource="classpath:consumer.xml"/>
+	<!-- 加载kafkaProducer配置 -->
+	<import resource="classpath:producer.xml"/>
+	<!-- 加载es配置 -->
+	<import resource="classpath:es.xml"/>
 	<!-- 加载数据库配置文件 -->
 	<context:property-placeholder location="classpath:db.properties" />
 	<!-- 数据库连接池 -->

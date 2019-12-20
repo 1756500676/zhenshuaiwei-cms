@@ -24,6 +24,7 @@
 					<br> <a href="#">${article.user.username }</a>发布于
 					<fmt:formatDate value="${article.created }" pattern="YYYY年MM月dd日" />
 					<button class="fa fa-star-o btn" onclick="favoriteArticle(${article.id})">收藏</button>
+					<button class="fa fa-thumbs-o-up" onclick="likeArticle(${article.id})">赞一个</button>
 					<hr>
 					${article.content }
 		</div>
@@ -67,20 +68,39 @@
 							<br>
 							${comment.content }
 							<!-- 评论的恢复 -->
+							<br>
 							<div class="row">
 								<div class="col-md-1"></div>
-								<div class="col-md-11">
+								<div class="col-md-11" >
 									<c:forEach items="${comment.replys }" var="reply">
-										<div>
-											<b>${reply.fromUser.username }</b>&gt;<b>${reply.toUser.username }</b>
-												&nbsp;&nbsp;
-												${reply.descDate }
-										</div>
-										<div>
+										<!-- 这是评论回复的恢复  -->
+										<c:if test="${reply.replyType == 1 }">
+											<div>
+												<img alt="" height="30px" width="30px" class="img-circle" src="/pic/${reply.fromUser.url }" onerror="this.src='/static/images/default_user_url.png'">
+												<b>${reply.fromUser.username }</b>&nbsp;&nbsp;<a href="javascript:showReplyCommentDiv(${reply.id })">回复<a>&nbsp;&nbsp;<b>${reply.toUser.username }</b>
+													&nbsp;&nbsp;
+													${reply.descDate }
+											</div>
+											<div>
+												<br>
+												<a href="#">${reply.toUser.username }: </a>${reply.content }
+											</div>
 											<br>
-											${reply.content }
-										</div>
-										<br>
+										</c:if>
+										<!-- 这是评论的回复 -->
+										<c:if test="${reply.replyType == 0 }">
+											<div>
+												<img alt="" height="30px" width="30px" class="img-circle" src="/pic/${reply.fromUser.url }" onerror="this.src='/static/images/default_user_url.png'">
+												<b>${reply.fromUser.username }</b>
+													&nbsp;&nbsp;
+													${reply.descDate }
+											</div>
+											<div>
+												<br>
+												${reply.content }
+											</div>
+											<br>
+										</c:if>
 									</c:forEach>
 								</div>
 							</div>
@@ -175,9 +195,9 @@
 		//点赞评论
 		function likeComment(id) {
 			$.ajax({
-				url:"/comment/likeComment",
+				url:"/like/insertLike",
 				type:"post",
-				data:{id:id},
+				data:{typeId:id,type:2,status:1},
 				dataType:"json",
 				success:function(data){
 					if (data.status == 100) {
@@ -232,7 +252,7 @@
 		function showRelpyDiv(thiz) {
 			$(thiz).parent().next().show();
 		}
-		
+		//发布评论过的回复		
 		function pushReply(thiz) {
 			var formData = $(thiz).parent().parent().serialize();
 			$.ajax({
@@ -255,6 +275,54 @@
 		            }
 				}
 			});
+		}
+		//作品的点赞
+		function likeArticle(id) {
+			$.ajax({
+				url:"/like/insertLike",
+				type:"post",
+				data:{typeId:id,type:1,status:1},
+				dataType:"json",
+				success:function(data){
+					if (data.status == 100) {
+						location.reload(true);
+					}else{
+						alert(data.info.error);
+					}			
+					//处理ajax内部重定向
+				},error:function(XMLHttpRequest, textStatus){
+					var redirect=XMLHttpRequest.getResponseHeader("REDIRECT");
+		            if(redirect=="REDIRECT"){
+		                alert("请先登录！");
+		               window.open(XMLHttpRequest.getResponseHeader("CONTEXTPATH"));
+		            }
+				}
+			});
+		}
+		
+		//处理回复评论的回复
+		function showReplyCommentDiv(replyId) {
+			$.ajax({
+				url:"/comment/getReplayById",
+				type:"post",
+				data:{"replyId":replyId},
+				dataType:"json",
+				success:function(data){
+					if (data.status == 100) {
+						alert(JSON.stringify(data.info.reply));
+					}else{
+						alert(data.info.error);
+					}			
+					//处理ajax内部重定向
+				},error:function(XMLHttpRequest, textStatus){
+					var redirect=XMLHttpRequest.getResponseHeader("REDIRECT");
+		            if(redirect=="REDIRECT"){
+		                alert("请先登录！");
+		               window.open(XMLHttpRequest.getResponseHeader("CONTEXTPATH"));
+		            }
+				}
+			});
+			
 		}
 	</script>
 	

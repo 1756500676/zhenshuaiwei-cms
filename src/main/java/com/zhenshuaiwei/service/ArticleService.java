@@ -196,6 +196,14 @@ public interface ArticleService {
 	 */
 	int deleteFavorite(Integer id, int articleId);
 
+	/** 
+	 * @Title: getAddToESArticles 
+	 * @Description: 获取要添加到es的文章
+	 * @return: void
+	 * @date: 2019年12月17日下午1:23:44
+	 */
+	List<Article> getAddToESArticles();
+
 
 
 }

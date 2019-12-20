@@ -116,6 +116,16 @@ public class CommentController {
 		return "user/myComment";
 	}
 	
+	/**
+	 * 
+	 * @Title: pushReply 
+	 * @Description: 发布评论的回复
+	 * @param session
+	 * @param reply
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年12月18日下午2:28:06
+	 */
 	@ResponseBody
 	@PostMapping("/pushReply")
 	public JsonMsg pushReply(HttpSession session,Reply reply) {
@@ -124,6 +134,15 @@ public class CommentController {
 		commentService.pushReply(reply);
 		return JsonMsg.success();
 	}
+	
+	
+	@ResponseBody
+	@PostMapping("/getReplayById")
+	public JsonMsg getReplayById(int replyId) {
+		Reply reply = commentService.getReplayById(replyId);
+		return JsonMsg.success().addInfo("reply", reply);
+	}
+	
 	
 	
 

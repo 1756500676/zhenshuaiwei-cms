@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +31,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.zhenshuaiwei.common.CmsAssert;
 import com.zhenshuaiwei.common.ConstantClass;
 import com.zhenshuaiwei.common.JsonMsg;
+import com.zhenshuaiwei.dateutils.DateDesc;
 import com.zhenshuaiwei.entity.Article;
 import com.zhenshuaiwei.entity.ArticleType;
 import com.zhenshuaiwei.entity.Category;
@@ -42,11 +45,11 @@ import com.zhenshuaiwei.entity.Channel;
 import com.zhenshuaiwei.entity.Comment;
 import com.zhenshuaiwei.entity.Images;
 import com.zhenshuaiwei.entity.User;
+import com.zhenshuaiwei.fileutils.FileUtil;
 import com.zhenshuaiwei.service.ArticleService;
 import com.zhenshuaiwei.service.CategoryService;
 import com.zhenshuaiwei.service.ChannelService;
 import com.zhenshuaiwei.service.CommentService;
-import com.zhenshuaiwei.utils.DateDesc;
 
 /** 
  * @ClassName: ArticleController 
@@ -70,9 +73,12 @@ public class ArticleController {
 	@Autowired
 	private ChannelService channelService;
 	
+	//评论
 	@Autowired
 	private CommentService commentService;
 	
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
 	/**
 	 * 日期格式工具
 	 */
@@ -236,6 +242,8 @@ public class ArticleController {
 		CmsAssert.AssertTrue(article != null , "文章不存在");
 		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
 		CmsAssert.AssertTrue(article.getUser().getId() == user.getId() || user.getRole() == ConstantClass.USER_ROLE_ADMIN, "无权限删除");
+//		通知kafka删除了文章
+		kafkaTemplate.send("articles","delete="+id);
 		if (articleService.deleteArticle(id) > 0) {
 			return JsonMsg.success();
 		}else {
@@ -278,7 +286,7 @@ public class ArticleController {
 	public JsonMsg getCheckArticle(int id) {
 		Article article = articleService.getCheckArticleById(id);
 		CmsAssert.AssertTrue(article != null, "该文章不存在");
-		return JsonMsg.success().addInfo("article", article);
+		return JsonMsg.success().addInfo("article", JSON.parse(JSON.toJSONString(article)));
 	}
 	
 	
@@ -361,6 +369,9 @@ public class ArticleController {
 		User user = (User)session.getAttribute(ConstantClass.USER_KEY);
 		article.setUserId(String.valueOf(user.getId()));
 		int result = articleService.addArticle(article);
+		System.out.println(article);
+//		通知kafka添加了文章
+		kafkaTemplate.send("articles","insert="+JSON.toJSONString(article));
 		if (result >0 ) {
 			return JsonMsg.success();
 		}else {
@@ -383,7 +394,6 @@ public class ArticleController {
 		String fileName = prefixName + suffixName;
 		sdf = new SimpleDateFormat("yyyyMMdd");
 		String path = sdf.format(new Date());
-		
 		File pathFile = new File("d:/pic/"+path);
 		if (!pathFile.exists()) {
 			pathFile.mkdirs();
@@ -463,6 +473,8 @@ public class ArticleController {
 		User user = (User)session.getAttribute(ConstantClass.USER_KEY);
 		article.setUserId(String.valueOf(user.getId()));
 		int result = articleService.updateArticle(article);
+		String jsonString = JSON.toJSONString(article);
+		kafkaTemplate.send("articles","update="+jsonString);
 		if (result >0 ) {
 			return JsonMsg.success();
 		}else {
@@ -570,6 +582,16 @@ public class ArticleController {
 		return "user/myFavorite";
 	}
 	
+	/**
+	 * 
+	 * @Title: deleteFavorite 
+	 * @Description: 删除收藏的文章
+	 * @param session
+	 * @param id
+	 * @return
+	 * @return: JsonMsg
+	 * @date: 2019年11月26日下午1:06:38
+	 */
 	@ResponseBody
 	@PostMapping("/deleteFavorite")
 	public JsonMsg deleteFavorite(HttpSession session,int id) {
@@ -581,4 +603,7 @@ public class ArticleController {
 			return JsonMsg.error().addInfo("error", "取消收藏失败");
 		}
 	}
+	
+	
+	
 }

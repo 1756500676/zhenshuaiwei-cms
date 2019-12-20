@@ -228,5 +228,14 @@ public interface ArticleMapper {
 	@Delete("delete from cms_favorite where userId=#{id} and articleId=#{articleId}")
 	int deleteFavorite(@Param("id")Integer id, @Param("articleId")int articleId);
 
+	/** 
+	 * @Title: getAddToESArticles 
+	 * @Description: TODO
+	 * @return
+	 * @return: List<Article>
+	 * @date: 2019年12月17日下午1:24:35
+	 */
+	List<Article> getAddToESArticles();
+
 
 }

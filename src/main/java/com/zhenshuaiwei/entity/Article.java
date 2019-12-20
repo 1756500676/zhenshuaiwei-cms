@@ -11,8 +11,15 @@
 package com.zhenshuaiwei.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** 
  * @ClassName: Article 
@@ -20,6 +27,7 @@ import java.util.List;
  * @author:zsw 
  * @date: 2019年11月14日 下午1:32:38  
  */
+@Document(indexName = "zhenshuaiwei-cms",type = "article")
 public class Article implements Serializable{
 
 	/**
@@ -28,23 +36,29 @@ public class Article implements Serializable{
 	 * @Description: TODO
 	 */
 	private static final long serialVersionUID = 6927479125403981315L;
+	@Id
 	private Integer id;
 	// 文章标题
+	@Field(analyzer = "ik",searchAnalyzer = "ik",store = true,type = FieldType.text)
 	private String title;
 	// 文章内容
+	@Field(analyzer = "ik",searchAnalyzer = "ik",store = true,type = FieldType.text)
 	private String content;
 	//标题图片的url 地址
 	private String picture;
 	// 频道
 	private String channelId;
+	@JsonIgnore
 	private Channel channel;
 	
 	//频道下的分类
 	private String categoryId;
+	@JsonIgnore
 	private Category category;
 	
 	//用户
 	private String userId;
+	@JsonIgnore
 	private User user;
 	
 	//点击数
@@ -62,9 +76,22 @@ public class Article implements Serializable{
 //	评论的数量
 	private int commentCnt;
 //	文章类型
+	@JsonIgnore
 	private ArticleType articleType = ArticleType.HTML;
-
+//	文章获赞的个数
+	private int likeNum;
+	
+	@JsonIgnore
 	private List<Images> images;
+	
+	public int getLikeNum() {
+		return likeNum;
+	}
+
+	public void setLikeNum(int likeNum) {
+		this.likeNum = likeNum;
+	}
+
 
 	public Integer getId() {
 		return id;

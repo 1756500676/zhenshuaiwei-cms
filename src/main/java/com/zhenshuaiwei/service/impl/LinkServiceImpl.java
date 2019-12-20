@@ -49,6 +49,13 @@ public class LinkServiceImpl implements LinkService {
 	public int deleteLink(int id) {
 		return linkMapper.deleteLink(id);
 	}
+
+	@Override
+	public PageInfo<Link> myFavorite(int page, Integer id) {
+		PageHelper.startPage(page, 10);
+		List<Link> list = linkMapper.getmyFavorite(id);
+		return new PageInfo<Link>(list);
+	}
 	
 	
 }

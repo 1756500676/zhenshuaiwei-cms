@@ -7,6 +7,7 @@
   		<id column="id" property="id" />
   		<result column="comment_id"  property="commentId"/>	
   		<result column="reply_id" property="replyId" />	
+  		<result column="reply_type" property="replyType" />	
   		<result column="from_userid" property="fromUserId"/>	
   		<result column="to_userid" property="toUserId"/>	
   		<association property="fromUser" column="from_userid" select="com.zhenshuaiwei.dao.UserMapper.getUserById"></association>
@@ -17,6 +18,7 @@
   								comment_id=#{commentId},
   								reply_id=#{replyId},
   								content=#{content},
+  								reply_type=#{replyType},
   								from_userid=#{fromUserId},
   								to_userid=#{toUserId},
   								created=now()
@@ -26,11 +28,24 @@
   		select 	id,
 				comment_id,
 				reply_id,
+				reply_type,
 				content,
 				from_userid,
 				to_userid,
 				created
 		from cms_reply where comment_id=${value}
+  	</select>
+  	
+  	<select id="getReplayById" resultMap="ReplyMap">
+  		select 	id,
+				comment_id,
+				reply_id,
+				reply_type,
+				content,
+				from_userid,
+				to_userid,
+				created
+		from cms_reply where id=#{value}
   	</select>
   
   </mapper>

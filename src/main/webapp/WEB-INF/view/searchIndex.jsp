@@ -36,46 +36,7 @@
 						<hr>
 						
 				</div>
-				
-				<div id="myCarousel" class="carousel slide" style="minheight:200px">
-						<!-- 轮播（Carousel）指标 -->
-						<ol class="carousel-indicators">
-							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-							<li data-target="#myCarousel" data-slide-to="1"></li>
-							<li data-target="#myCarousel" data-slide-to="2"></li>
-						</ol>   
-						<!-- 轮播（Carousel）项目 -->
-						<div class="carousel-inner">
-							<div class="item active" style="widows: 800px;height: 300px">
-								<a href="#" class="thumbnail">
-									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/index1.jpg" alt="Second slide">
-								</a>
-								<div class="carousel-caption">我爱中国共产党</div>
-							</div>
-							<div class="item " style="widows: 800px;height: 300px">
-								<a href="#" class="thumbnail">
-									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/IMG_0832.JPG" alt="First slide">
-								</a>
-								<div class="carousel-caption">也爱你</div>
-							</div>
-							<div class="item" style="widows: 800px;height: 300px"> 
-								<a href="#" class="thumbnail">
-									<img style="widows: 800px;height: 300px" src="<%=request.getContextPath() %>/static/images/index2.jpg" alt="Second slide">
-								</a>
-								<div class="carousel-caption">党在我心中</div>
-							</div>
-						</div>
-						<!-- 轮播（Carousel）导航 -->
-						<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-							<span class="sr-only">Previous</span>
-						</a>
-						<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-							<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-							<span class="sr-only">Next</span>
-						</a>
-					</div>
-					<!-- 放热门文章的列表 -->
+					<!-- 放搜索文章的列表 -->
 					<div class="container" style="width: 780px" >
 						<c:forEach items="${info.list }" var="hotArticle">
 							<div class=row>
@@ -94,54 +55,7 @@
 								</div>
 							</div>
 						</c:forEach>
-						<div class="row">
-							<ul class="pagination">
-							 	
-							    <li class=""><a href="/index?page=${info.pageNum == 1 ? 1 : info.pageNum - 1 }" >&laquo;</a></li>
-							    
-							    <c:if test="${info.pages <= 5 }">
-									<c:forEach var="count" varStatus="index" begin="1" end="${info.pages }">
-									    <li class="${count == info.pageNum ?  'active' : '' }"><a href="/index?page=${count }" class="">${count }</a></li>
-									 </c:forEach>
-							    </c:if>
-							    
-							    <c:if test="${info.pages > 5 }">
-								 	<c:choose>
-								 		<c:when test="${info.pageNum > 2 && info.pageNum < (info.pages -1) }">
-										    <c:forEach var="count" varStatus="index" begin="${info.pageNum -2}" end="${info.pageNum + 2}">
-										    	<li class="${count == info.pageNum ?  'active' : '' }"><a href="/index?page=${count }" class="">${count }</a></li>
-										    </c:forEach>
-								 		</c:when>
-								 		<c:when test="${info.pageNum == 2 }">
-										    <c:forEach var="count" varStatus="index" begin="${info.pageNum - 1}" end="${info.pageNum + 3}">
-										    	<li class="${count == info.pageNum ?  'active' : '' }"><a href="/index?page=${count }" class="">${count }</a></li>
-										    </c:forEach>
-								 		</c:when>
-								 		<c:when test="${info.pageNum == 1 }">
-										    <c:forEach var="count" varStatus="index" begin="${info.pageNum}" end="${info.pageNum + 4}">
-										    	<li class="${count == info.pageNum ?  'active' : '' }"><a href="/index?page=${count }" class="">${count }</a></li>
-										    </c:forEach>
-								 		</c:when>
-								 		<c:when test="${info.pageNum == info.pages }">
-										    <c:forEach var="count" varStatus="index" begin="${info.pageNum - 4}" end="${info.pages}">
-										    	<li class="${count == info.pageNum ?  'active' : '' }"><a href="/index?page=${count }" class="">${count }</a></li>
-										    </c:forEach>
-								 		</c:when>
-								 		<c:when test="${info.pageNum == (info.pages - 1)}">
-										    <c:forEach var="count" varStatus="index" begin="${info.pageNum - 3}" end="${info.pageNum +1 }">
-										    	<li class="${count == info.pageNum ?  'active' : '' }"><a href="/index?page=${count }" class="">${count }</a></li>
-										    </c:forEach>
-								 		</c:when>
-								 	</c:choose>
-								 </c:if>
-							    
-							    <%-- <c:forEach var="count" varStatus="index" begin="${info.pageNum > 2 ? info.pageNum -2 : 1}" end="${info.pageNum + 2 > info.pages ? info.pages : info.pageNum+2}">
-							    	<li><a href="javascript:goPage(${count })" class="">${count }</a></li>
-							    </c:forEach> --%>
-							    
-							    <li><a href="/index?page=${info.pageNum == info.pages ? info.pageNum : info.pageNum + 1 }">&raquo;</a></li>
-							</ul>				
-						</div>
+						<%@include file="common/page.jsp" %>
 					</div>
 					 
 			</div>
@@ -211,6 +125,9 @@
 	}
 	function showArticle(url) {
 		window.open(url);
+	}
+	function goPage(page) {
+		location = "/search?page="+page+"&searchV=${searchV}";
 	}
 </script>
 

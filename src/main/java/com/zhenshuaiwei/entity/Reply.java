@@ -36,6 +36,8 @@ public class Reply implements Serializable {
 	//column reply_id
 	private int replyId;
 	
+	private int replyType;
+	
 	private String content;
 	//column from_userid;
 	private int fromUserId;
@@ -49,6 +51,15 @@ public class Reply implements Serializable {
 	private String descDate;
 
 	
+	
+	public int getReplyType() {
+		return replyType;
+	}
+
+	public void setReplyType(int replyType) {
+		this.replyType = replyType;
+	}
+
 	public String getDescDate() {
 		return descDate;
 	}
@@ -129,19 +140,6 @@ public class Reply implements Serializable {
 		this.created = created;
 	}
 
-	public Reply(Integer id, int commentId, int replyId, String content, int fromUserId, User fromUser, int toUserId,
-			User toUser, Date created) {
-		super();
-		this.id = id;
-		this.commentId = commentId;
-		this.replyId = replyId;
-		this.content = content;
-		this.fromUserId = fromUserId;
-		this.fromUser = fromUser;
-		this.toUserId = toUserId;
-		this.toUser = toUser;
-		this.created = created;
-	}
 
 	public Reply() {
 		super();

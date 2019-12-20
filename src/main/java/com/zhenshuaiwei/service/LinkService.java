@@ -48,4 +48,15 @@ public interface LinkService {
 	 */
 	int deleteLink(int id);
 
+	/** 
+	 * @Title: myFavorite 
+	 * @Description: TODO
+	 * @param page
+	 * @param id
+	 * @return
+	 * @return: PageInfo<Link>
+	 * @date: 2019年11月27日上午9:09:44
+	 */
+	PageInfo<Link> myFavorite(int page, Integer id);
+
 }

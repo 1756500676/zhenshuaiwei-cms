@@ -19,9 +19,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.pagehelper.PageInfo;
+import com.zhenshuaiwei.dateutils.DateDesc;
 import com.zhenshuaiwei.entity.Comment;
 import com.zhenshuaiwei.service.CommentService;
-import com.zhenshuaiwei.utils.DateDesc;
 
 /** 
  * @ClassName: DateTest 

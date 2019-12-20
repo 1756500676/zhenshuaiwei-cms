@@ -60,6 +60,11 @@ public class LinkController {
 		m.addAttribute("link", new Link());
 		return "system/addLink2";
 	}
+	@GetMapping("/addUserLink")
+	public String addUserLink(Model m) {
+		m.addAttribute("link", new Link());
+		return "user/addLink2";
+	}
 	
 	/**
 	 * 
@@ -72,13 +77,28 @@ public class LinkController {
 	 * @date: 2019年11月23日下午7:09:26
 	 */
 	@PostMapping("/addLink")
-	public String addLink(@Valid @ModelAttribute("link")Link link,BindingResult result) {
+	public String addLink(@Valid @ModelAttribute("link")Link link,BindingResult result,
+							HttpSession session) {
 		if (result.hasErrors()) {
 				return "system/addLink2";
 			
 		}
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		link.setUserId(user.getId());
 		linkService.addLink(link);
 		return "system/index";
+	}
+	@PostMapping("/addUserLink")
+	public String addUserLink(@Valid @ModelAttribute("link")Link link,BindingResult result,
+			HttpSession session) {
+		if (result.hasErrors()) {
+			return "user/addLink2";
+			
+		}
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		link.setUserId(user.getId());
+		linkService.addLink(link);
+		return "user/myCenter";
 	}
 	
 	/**
@@ -97,6 +117,14 @@ public class LinkController {
 		m.addAttribute("info", info);
 		return "system/links";
 	}
+	
+	@GetMapping("/myFavorite")
+	public String myFavorite(Model m,@RequestParam(defaultValue = "1")int page,HttpSession session) {
+		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
+		PageInfo<Link> info = linkService.myFavorite(page,user.getId());
+		m.addAttribute("info", info);
+		return "user/links";
+	}
 
 	/**
 	 * 
@@ -111,8 +139,6 @@ public class LinkController {
 	@ResponseBody
 	@PostMapping("/deleteLink")
 	public JsonMsg deleteLink(HttpSession session,int id) {
-		User user = (User) session.getAttribute(ConstantClass.USER_KEY);
-		CmsAssert.AssertTrue(user.getRole() == ConstantClass.USER_ROLE_ADMIN, "只有管理员可删除");
 		int result = linkService.deleteLink(id);
 		if (result > 0) {
 			return JsonMsg.success();

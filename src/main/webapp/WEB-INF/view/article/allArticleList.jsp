@@ -66,7 +66,7 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 <h4 class="modal-title" id="myModalLabel">文章审核</h4>
                         </div>
-                        <div class="modal-body" style="height:200px;overflow-x:scroll;overflow-y:scroll">
+                        <div class="modal-body" style="height:500px;overflow-x:scroll;overflow-y:scroll">
                         	<div id="articleTitle"></div>
                         	<div id="articleChannel"></div>
                         	<div id="articleContext"></div>

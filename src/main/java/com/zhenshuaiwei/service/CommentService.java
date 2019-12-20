@@ -70,4 +70,13 @@ public interface CommentService {
 	 */
 	void pushReply(Reply reply);
 
+	/** 
+	 * @Title: getReplayById 
+	 * @Description: 获取评论回复
+	 * @param replyId
+	 * @return: void
+	 * @date: 2019年12月18日下午2:28:46
+	 */
+	Reply getReplayById(int replyId);
+
 }

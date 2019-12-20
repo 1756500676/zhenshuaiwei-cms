@@ -10,7 +10,6 @@
  */
 package com.zhenshuaiwei.service.impl;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -23,10 +22,10 @@ import com.github.pagehelper.PageInfo;
 import com.zhenshuaiwei.dao.ArticleMapper;
 import com.zhenshuaiwei.dao.CommentMapper;
 import com.zhenshuaiwei.dao.ReplyMapper;
+import com.zhenshuaiwei.dateutils.DateDesc;
 import com.zhenshuaiwei.entity.Comment;
 import com.zhenshuaiwei.entity.Reply;
 import com.zhenshuaiwei.service.CommentService;
-import com.zhenshuaiwei.utils.DateDesc;
 
 /** 
  * @ClassName: CommentServiceImpl 
@@ -50,6 +49,7 @@ public class CommentServiceImpl implements CommentService{
 	public PageInfo<Comment> getArticleCommentById(Integer articleId,int pageNum) throws Exception {
 		PageHelper.startPage(pageNum, 5);
 		List<Comment> list = mapper.getArticleCommentById(articleId);
+		//改变评论的恢复时间,使用倒计时
 		for (Comment comment : list) {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
 			Date date = format.parse(comment.getDateDesc());
@@ -87,6 +87,11 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public void pushReply(Reply reply) {
 		replyMapper.pushReply(reply);
+	}
+
+	@Override
+	public Reply getReplayById(int replyId) {
+		return replyMapper.getReplayById(replyId);
 	}
 	
 }

@@ -29,4 +29,13 @@ public interface ReplyMapper {
 	 */
 	void pushReply(Reply reply);
 
+	/** 
+	 * @Title: getReplayById 
+	 * @Description: TODO
+	 * @param replyId
+	 * @return: void
+	 * @date: 2019年12月18日下午2:29:35
+	 */
+	Reply getReplayById(int replyId);
+
 }

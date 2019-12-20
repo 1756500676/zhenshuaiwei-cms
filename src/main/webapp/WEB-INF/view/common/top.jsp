@@ -33,9 +33,9 @@
                           <li><a href="#">下载APP</a></li>
                         </ul>
 
-					  <form class="navbar-form navbar-left">
+					  <form class="navbar-form navbar-left" id="searchForm" action="/search" method="get">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="站内搜索">
+                              <input type="text" class="form-control" name="searchV" placeholder="站内搜索">
                             </div>
                             <button type="submit" class="btn btn-default">搜索</button>
                         </form> 
