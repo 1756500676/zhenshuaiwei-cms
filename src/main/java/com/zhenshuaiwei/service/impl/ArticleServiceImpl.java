@@ -63,7 +63,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public Article getArticleById(Integer id) {
-		mapper.updateArticleCommentCntHitsUp(id);
+		
+		
 		return mapper.getArticleById(id);
 	}
 

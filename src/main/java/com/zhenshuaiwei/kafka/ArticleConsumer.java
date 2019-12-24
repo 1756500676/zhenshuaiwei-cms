@@ -58,6 +58,10 @@ public class ArticleConsumer implements MessageListener<String, String>{
 //			存在bug文章未审核可直接搜索到
 			String messageValue = message.split("=")[1];
 			articleRepository.save(JSON.parseObject(messageValue,Article.class));
+		}else if (message.startsWith("MYSQLAddArticle")){
+			String messageValue = message.split("=")[1];
+			Article article = JSON.parseObject(messageValue,Article.class);
+			articelMapper.addArticle(article);
 		}else {
 			Article article = JSON.parseObject(message, Article.class);
 			articelMapper.addArticle(article);

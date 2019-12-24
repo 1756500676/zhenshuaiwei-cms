@@ -158,8 +158,9 @@
 									channel_id=#{channelId},
 									category_id=#{categoryId},
 									user_id=#{userId},
-									hot=0,
+									hot=#{hot},
 									status=0,
+									hits=#{hits},
 									deleted=0,
 									created=now(),
 									updated=now()
@@ -172,10 +173,10 @@
 									channel_id=#{channelId},
 									category_id=#{categoryId},
 									user_id=#{userId},
+									hits=#{hits},
 									<if test="hot != null and hot !=''">
 										hot=#{hot},
 									</if>
-									status=0,
 									<if test="deleted != null and deleted !=''">
 										deleted=0,
 									</if>

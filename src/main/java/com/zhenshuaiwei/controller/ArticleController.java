@@ -16,12 +16,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,9 +80,14 @@ public class ArticleController {
 	//评论
 	@Autowired
 	private CommentService commentService;
-	
+	//kafkak
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;
+//	redis
+	@Autowired
+	private RedisTemplate redisTemplate;
+	
+	
 	/**
 	 * 日期格式工具
 	 */
@@ -97,8 +106,8 @@ public class ArticleController {
 	@GetMapping("/getArticleById")
 	public String getArticleById(Model m,Integer id,String protal,String page,
 								@RequestParam(defaultValue = "1")int pageNum,
-								String scrollTo) throws Exception {
-		System.out.println("protal=========================="+protal);
+								String scrollTo,
+								HttpServletRequest request) throws Exception {
 		if (scrollTo != null) {
 			m.addAttribute("scrollTo", scrollTo);
 		}
@@ -144,13 +153,12 @@ public class ArticleController {
 			//第一次进入
 			articleId = id;
 		}
-		System.out.println(articleId+"=============================");
 //		获取文章
 		Article article = articleService.getArticleById(articleId);
+		
 //		文章评论
 		PageInfo<Comment> info = commentService.getArticleCommentById(articleId,pageNum);
 		m.addAttribute("info", info);
-		
 		
 		
 		m.addAttribute("protal", protal);
@@ -446,7 +454,7 @@ public class ArticleController {
 		List<Channel> channelList = channelService.getChannelList();
 		m.addAttribute("channelList", channelList);
 		Article article = articleService.getCheckArticleById(id);
-		m.addAttribute("article", article);
+		m.addAttribute("article",article);
 		CmsAssert.AssertTrueHtml(article != null, "该文章不存在");
 		return "article/updateArticle";
 	}
